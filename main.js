@@ -58,3 +58,54 @@ var PROFILE = {
     question: "bagool",
     answer: "bafool"
 }
+
+// Checks if element exists by html id
+function existselementid(htmlid) {
+    var element = document.getElementById(htmlid);
+    if (element) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Check if element exists by html tag
+function existstag(tag) {
+    var element = document.getElementByTagName(tag);
+    if (element) {
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
+// Check if element exists by query (CSS)
+function existsquery(query) {
+    var element = document.querySelector(query)
+    if (element) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+// Changes text value if element exists. Else, does nothing.
+function trytype(query, text) {
+    if (existsquery(query)) {
+        document.querySelector(query).value = text;
+    } 
+}
+
+// Moves to xpath by scrolling into view and then clicks on target element
+// document.querySelector("input[data-automation-id*='password']:nth-child(1)")
+//unfinished! 
+function moveclick(query) {
+    foundelement = document.querySelector(query);
+    foundelement.click()
+}
+
+
+// Main function. Two parts. First, detects the URL to determine application type
+// Second, calls on function inside other js files to perform the autofill.
