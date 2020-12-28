@@ -69,15 +69,24 @@ function existselementid(htmlid) {
     }
 }
 
-// Check if element exists by html tag
-function existstag(tag) {
-    var element = document.getElementByTagName(tag);
-    if (element) {
+// Checks if element exists by class name
+function existsclass(classname) {
+    var element = document.getElementsByClassName(classname);
+    if (element.length > 0) {
         return true;
     } else {
         return false;
     }
+}
 
+// Check if element exists by html tag
+function existstag(tag) {
+    var element = document.getElementsByTagName(tag);
+    if (element.length > 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // Check if element exists by query (CSS)
@@ -102,10 +111,24 @@ function trytype(query, text) {
 // document.querySelector("input[data-automation-id*='password']:nth-child(1)")
 //unfinished! 
 function moveclick(query) {
-    foundelement = document.querySelector(query);
+    var foundelement = document.querySelector(query);
+    foundelement.scrollIntoView()
     foundelement.click()
 }
+
+// Export helper functions
+export {
+    PROFILE,
+    existselementid,
+    existsclass,
+    existsquery,
+    existstag,
+    trytype,
+    moveclick
+};
 
 
 // Main function. Two parts. First, detects the URL to determine application type
 // Second, calls on function inside other js files to perform the autofill.
+
+
