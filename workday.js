@@ -1,19 +1,54 @@
 import {PROFILE, moveclick, existsclass, existselementid, existsquery,
-existstag, trytype} from main
+existstag, trytype, pollDOM} from "./main.js"
 /// <reference path="jquery-3.5.1.js"/>
 
+var inputevent = new Event('input', {
+    bubbles: true,
+    cancelable: true,
+});
+
+// Helper function to handle workday events. Fills out an input field and updates the value with site JS.
+function changevalue(element, stringval) {
+    element.value = stringval;
+    element.dispatchEvent(inputevent);
+}
+
+
 function login() {
-    var emailfield = document.querySelector("input[data-automation-id=email]");
-    var passwordfield = document.querySelector("input[data-automation-id=password]");
-    emailfield.value = PROFILE.email;
-    var inputevent = new Event('input', {
-        bubbles: true,
-        cancelable: true,
-    });
-    emailfield.dispatchEvent(inputevent);
-    passwordfield.value = PROFILE.password;
-    passwordfield.dispatchEvent(inputevent);
+    const emailfield = document.querySelector("input[data-automation-id=email]");
+    const passwordfield = document.querySelector("input[data-automation-id=password]");
+    changevalue(emailfield, PROFILE.email);
+    changevalue(passwordfield, PROFILE.password)
     moveclick('div[data-automation-id=click_filter]');
+}
+
+function personalinfo(nav, form) {
+    //incomplete
+    if (form == "default") { //we don't want to rely on page ordering if we don't have to, so this is the default.
+
+
+    }
+    if (form == "custom") { 
+        const firstname = document.evaluate('//*[contains(text(), "First Name")]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+        const lastname = document.evaluate('//*[contains(text(), "Last Name")]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+        changevalue(firstname, PROFILE.firstname);
+        changevalue(lastname, PROFILE.lastname);
+        const address = document.evaluate("//*[contains(text(), 'Address Line 1')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+        const city = document.evaluate("//*[contains(text(), 'City')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+        const zipcode = document.evaluate("//*[contains(text(), 'Postal Code')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+        const state = document.evaluate('//label[contains(text(), "State")]//following::div[2]//div[1]//div[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+        changevalue(address, PROFILE.address);
+        changevalue(city, PROFILE.city);
+        changevalue(zipcode, PROFILE.zip_code);
+        state.click();
+        var encapsulated_state = "\"" + PROFILE.state + "\"";
+        pollDOM('//div[contains(text(),' + encapsulated_state + ')]');
+        var targetstate = document.evaluate('//div[contains(text(),' + encapsulated_state + ')]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+        targetstate.click()
+        const phone = document.evaluate("//*[contains(text(), 'Phone Number')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+        changevalue(phone, PROFILE.phone);
+    }
+    //done, send notification and wait for next page
 }
 
 function workday(nav, form) {

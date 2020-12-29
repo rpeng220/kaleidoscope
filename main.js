@@ -116,6 +116,17 @@ function moveclick(query) {
     foundelement.click()
 }
 
+// Waits for element found by xpath to be present before continuing.
+function pollDOM(xpath) {
+    const el = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+    if (el.length) {
+        return;
+  } else {
+    setTimeout(pollDOM, 300); // try again in 300 milliseconds
+  }
+}
+
+
 // Export helper functions
 export {
     PROFILE,
@@ -124,7 +135,8 @@ export {
     existsquery,
     existstag,
     trytype,
-    moveclick
+    moveclick,
+    pollDOM
 };
 
 
