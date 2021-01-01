@@ -14,6 +14,7 @@ var PROFILE = {
     state: "California",
     zip_code: "94702",
     university: "UC Berkeley",
+    gpa: 4,
     degree: "Economics",
     uni_start_month: 8,
     uni_start_year: "2017",

@@ -174,11 +174,40 @@ function experience(nav, form) {
                 }
             if (currenttext.includes("Degree") || existsquery('[aria-label=Add Education]')) {
                 edusection = true;
-                //education stuff
+                if (currenttext.includes("Degree") == false) {
+                    document.querySelector("[aria-label='Add Education']").click();
+                    pollDOM("//*[@data-automation-id='school']", function() {
+                        changevalue(document.querySelector("[data-automation-id='school']"), PROFILE.university);
+                        changevalue(document.querySelector("[data-automation-id='gpa']"), PROFILE.gpa);
+                        trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.uni_start_year);
+                        trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 1, PROFILE.grad_year);
+                        document.querySelector("[data-automation-id='degree']").click()
+                        setTimeout(document.evaluate('//div[contains(text(), "Bachelors Degree")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click(), 800);
+                    })
                 }
+            }
             if (existsquery('[aria-label="Add Languages"]') || currenttext.includes('native language')) {
                 langsection = true;
                 // language ttff 
+                if (currenttext.includes("native language") == false) {
+                    document.querySelector("[aria-label='Add Languages']").click();
+                    setTimeout(function() {
+                        document.querySelector("[data-automation-id='language']").click();
+                        setTimeout(document.evaluate('//div[contains(text(), "English")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click(), 500);
+                        }, 500);
+                    setTimeout(function() {
+                        document.querySelector("[data-automation-id='languageProficiency-0']").click();
+                        setTimeout(function() {
+                            document.evaluate('//div[contains(text(), "Native")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+                        }, 500);
+
+                            //settimeout
+                        
+
+
+                    })
+
+
                 }
             //upload resume here
             //click code goes here
