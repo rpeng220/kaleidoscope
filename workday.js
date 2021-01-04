@@ -13,6 +13,15 @@ function changevalue(element, stringval) {
     element.dispatchEvent(inputevent);
 }
 
+function trytypexpath(xpath, stringval) {
+    ele = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+    if (ele) {
+        ele.value = stringval;
+        ele.dispatchEvent(inputevent);
+    }
+}
+
+
 // Trytype for Workday apps using querySelector
 function trytypeworkday(query, stringval) {
     if (existsquery(query)) {
@@ -29,7 +38,12 @@ function trytypelist(xpath, posn, stringval) {
         ele.value = stringval;
         ele.dispatchEvent(inputevent);
     }
+} 
 
+function dropdownSelect(xpath1, xpath2) {
+    var dropdown = document.evaluate(xpath1, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+    dropdown.click()
+    pollDOM(xpath2, document.evaluate(xpath2, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click())
 } 
 
 function login() {
@@ -153,6 +167,12 @@ function experience(nav, form) {
             trytypeworkday('[data-automation-id="location"]', PROFILE.job_location1);
             trytypeworkday('[data-automation-id="description"]', PROFILE.job_desc1);
             trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.job_start_month1 + PROFILE.job_start_year1);
+            if (PROFILE.current_job1 == 1) {
+                document.querySelector('[data-automation-id="currentlyWorkHere"]').click()
+            } else {
+                trytypelist('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month1 + PROFILE.job_end_year1);
+                datecount += 1;
+            }
             if (PROFILE.employer2 != "") {
                 pollDOM('//*[@aria-label="Add Another Work Experience"]', function() {
                     document.querySelector('[aria-label="Add Another Work Experience"]').click()
@@ -161,115 +181,140 @@ function experience(nav, form) {
                         trytypelist('//*[@data-automation-id="company"]', 1, PROFILE.employer2);
                         trytypelist('//*[@data-automation-id="location"]', 1, PROFILE.job_location2);
                         trytypelist('//*[@data-automation-id="description"]', 1, PROFILE.job_desc2);
+                        trytypelist('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_start_month2 + PROFILE.job_start_year2);
+                        datecount += 1;
+                        if (PROFILE.current_job2 == 1) {
+                            document.evaluate('//*[@data-automation-id="currentlyWorkHere"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(1).click();
+                        } else {
+                            trytypelist('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month2 + PROFILE.job_end_year2);
+                            datecount += 1;
+                        }
                         if (PROFILE.employer3 != "") {
-                            pollDOM('(//*[@data-automation-id="jobTitle"])[3]', function() {
-                                trytypelist('//*[@data-automation-id="jobTitle"]', 2, PROFILE.job_title3);
-                                trytypelist('//*[@data-automation-id="company"]', 2, PROFILE.employer3);
-                                trytypelist('//*[@data-automation-id="location"]', 2, PROFILE.job_location3);
-                                trytypelist('//*[@data-automation-id="description"]', 2, PROFILE.job_desc3);
-                                })
+                            pollDOM('//*[@aria-label="Add Another Work Experience"]', function() {
+                                document.querySelector('[aria-label="Add Another Work Experience"]').click()
+                                pollDOM('(//*[@data-automation-id="jobTitle"])[3]', function() {
+                                    trytypelist('//*[@data-automation-id="jobTitle"]', 2, PROFILE.job_title3);
+                                    trytypelist('//*[@data-automation-id="company"]', 2, PROFILE.employer3);
+                                    trytypelist('//*[@data-automation-id="location"]', 2, PROFILE.job_location3);
+                                    trytypelist('//*[@data-automation-id="description"]', 2, PROFILE.job_desc3);
+                                    trytypelist('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_start_month3 + PROFILE.job_start_year3);
+                                    datecount += 1;
+                                    if (PROFILE.current_job2 == 1) {
+                                        document.evaluate('//*[@data-automation-id="currentlyWorkHere"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(2).click();
+                                    } else {
+                                        trytypelist('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month3 + PROFILE.job_end_year3);
+                                        datecount += 1;
+                                        }
+                                    });
+                                });
                             }
                         });
                     });
                 }
-            if (currenttext.includes("Degree") || existsquery('[aria-label=Add Education]')) {
-                edusection = true;
-                if (currenttext.includes("Degree") == false) {
-                    document.querySelector("[aria-label='Add Education']").click();
-                    pollDOM("//*[@data-automation-id='school']", function() {
-                        changevalue(document.querySelector("[data-automation-id='school']"), PROFILE.university);
-                        changevalue(document.querySelector("[data-automation-id='gpa']"), PROFILE.gpa);
-                        trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.uni_start_year);
-                        trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 1, PROFILE.grad_year);
-                        document.querySelector("[data-automation-id='degree']").click()
-                        setTimeout(document.evaluate('//div[contains(text(), "Bachelors Degree")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click(), 800);
-                    })
-                }
-            }
-            if (existsquery('[aria-label="Add Languages"]') || currenttext.includes('native language')) {
-                langsection = true;
-                // language ttff 
-                if (currenttext.includes("native language") == false) {
-                    document.querySelector("[aria-label='Add Languages']").click();
-                    setTimeout(function() {
-                        document.querySelector("[data-automation-id='language']").click();
-                        setTimeout(document.evaluate('//div[contains(text(), "English")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click(), 500);
-                        }, 500);
-                    setTimeout(function() {
-                        document.querySelector("[data-automation-id='languageProficiency-0']").click();
+                if (currenttext.includes("Degree") || existsquery('[aria-label=Add Education]')) {
+                    edusection = true;
+                    if (currenttext.includes("Degree") == false) {
+                        document.querySelector("[aria-label='Add Education']").click();
+                        pollDOM("//*[@data-automation-id='school']", function() {
+                            changevalue(document.querySelector("[data-automation-id='school']"), PROFILE.university);
+                            changevalue(document.querySelector("[data-automation-id='gpa']"), PROFILE.gpa);
+                            trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.uni_start_year);
+                            trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 1, PROFILE.grad_year);
+                            document.querySelector("[data-automation-id='degree']").click();
+                            setTimeout(document.evaluate('//div[contains(text(), "Bachelors Degree")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click(), 800);
+                            setTimeout(function() {
+                                document.querySelector('[data-automation-id="multiselectInputContainer"]').click();
+                                setTimeout(function() {
+                                    var major = '[data-automation-label="' + PROFILE.major + '"]';
+                                    changevalue(document.querySelector('[data-automation-id="searchBox"]'), PROFILE.major);
+                                    setTimeout(document.querySelector(major).click(), 600);
+                                    }, 600)
+                                }, 1000)
+                            })
+                        }
+                    }
+                if (existsquery('[aria-label="Add Languages"]') || currenttext.includes('native language')) {
+                    langsection = true;
+                    // language ttff 
+                    if (currenttext.includes("native language") == false) {
+                        document.querySelector("[aria-label='Add Languages']").click();
                         setTimeout(function() {
-                            document.evaluate('//div[contains(text(), "Native")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
-                        }, 500);
-
-                            //settimeout
-                        
-
-
-                    })
-
-
-                }
+                            document.querySelector("[data-automation-id='language']").click();
+                            setTimeout(document.evaluate('//div[contains(text(), "English")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click(), 500);
+                            }, 1000);
+                        setTimeout(function() {
+                            document.querySelector("[data-automation-id='languageProficiency-0']").click();
+                            setTimeout(document.evaluate('//div[contains(text(), "Native")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click(), 1500);
+                        }, 2000);
+                        setTimeout(document.querySelector('[data-automation-id="nativeLanguage"]').click(), 2300);
+                    }
             //upload resume here
             //click code goes here
-            }
-            pollDOM('//*[@data-automation-id="jobTitle"]', defaultfunc);
+                }
             //trytypelist
+            }
+        pollDOM('//*[@data-automation-id="jobTitle"]', defaultfunc())
         }
-        //pollDOM defaultfunc()
     }
-}
+    if (form == "custom") {
+        if (currenttext.includes("Job Title") == false) {
+            document.evaluate('//*[contains(text(), "Work Experience")]//following::button[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+        }
+        function custom() {
+            trytypexpath('//*[contains(text(), "Job Title")]//following::input[1]', PROFILE.job_title1);
+            trytypexpath('//*[contains(text(), "Company")]//following::input[1]', PROFILE.employer1);
+            trytypexpath('//*[contains(text(), "Location")]//following::input[1]', PROFILE.job_location1);
+            trytypexpath('//*[contains(text(), "Role Description")]//following::input[1]', PROFILE.job_desc1);
+            trytypexpath('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', PROFILE.job_start_month1 + PROFILE.job_start_year1);
+            if (PROFILE.current_job1 == 1) {
+                document.evaluate('(//label[contains(text(), "currently work here")])[1]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+            } else {
+                trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_end_month1 + PROFILE.job_end_year1);
+                datecount += 1
+            }
+            if (PROFILE.employer2 != "") {
+                setTimeout(function() {
+                    document.evaluate('//*[contains(text(), "Work Experience")]//following::button[2]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+                    setTimeout(function() {
+                        trytypexpath('(//*[contains(text(), "Job Title")])[3]//following::input[1]', PROFILE.job_title2);
+                        trytypexpath('(//*[contains(text(), "Company")])[3]//following::input[1]', PROFILE.employer2);
+                        trytypexpath('(//*[contains(text(), "Location")])[3]//following::input[1]', PROFILE.job_location2);
+                        trytypexpath('(//*[contains(text(), "Role Description")])[3]//following::input[1]', PROFILE.job_desc2);
+                        trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_start_month2 + PROFILE.job_start_year2);
+                        datecount += 1;
+                        if (PROFILE.current_job2 == 1) {
+                            document.evaluate('(//label[contains(text(), "currently work here")])[2]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+                        } else {
+                            trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_end_month2 + PROFILE.job_end_year2);
+                            datecount += 1;
+                        }
+                        setTimeout(function() {
+                            trytypexpath('(//*[contains(text(), "Job Title")])[last()]//following::input[1]', PROFILE.job_title3);
+                            trytypexpath('(//*[contains(text(), "Company")])[last()]//following::input[1]', PROFILE.employer3);
+                            trytypexpath('(//*[contains(text(), "Location")])[last()]//following::input[1]', PROFILE.job_location3);
+                            trytypexpath('(//*[contains(text(), "Role Description")])[last()]//following::input[1]', PROFILE.job_desc3);
+                            trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_start_month3 + PROFILE.job_start_year3);
+                            datecount += 1;
+                            if (PROFILE.current_job2 == 1) {
+                                document.evaluate('(//label[contains(text(), "currently work here")])[3]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+                            } else {
+                                trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_end_month3 + PROFILE.job_end_year3);
+                                datecount += 1;
+                            }
+                        }, 500)
+                    }, 500)
 
-function workday(nav, form) {
-    setTimeout(function() {
-    var currentpage = "none"
-        if (nav == "we51") {
-            currentpage = document.querySelector('[data-automation-id="taskOrchCurrentItemLabel"]').innerText;
-        }
-        if (nav == "progressbar") {
-            currentpage = document.getElementsByClassName('css-1uso8fp')[0].innerText;
-        }
-        if (nav == "h2") {
-            currentpage = document.getElementsByTagName('h2')[0].innerText;
-        }
-        var pagelower = currentpage.toLowerCase();
-        if (existsquery('[data-automation-id="bottom-navigation-next-button"]')) {
-            form = "default";
-        } else if (existsquery('[data-automation-id="wd-CommandButton_next"]')) {
-            form = "custom";
-        }
-        if (pagelower.includes("quick apply")) {
-            if (form == "default") {
-                document.querySelector('[data-automation-id="bottom-navigation-next-button"]').click();
-            } else {
-                document.querySelector('[data-automation-id="wd-CommandButton_next"]').click();
+                }, 500);
             }
-            return workday(nav, form);
+        //education + language stuff
+
+
+
+
+
         }
-        if (pagelower.includes('my information')) {
-            return personalinfo(nav, form);
-        }
-        if (pagelower.includes('my experience')) {
-            return experience(nav, form);
-        }
-        if (pagelower.includes('disclosure')) {
-            return disclosure(nav, form);
-        }
-        if (pagelower.includes('identify')) {
-            return disability(nav, form);
-        }
-        if (pagelower.includes("review")) {
-            if (form == 'default') {
-                document.querySelector('[data-automation-id="bottom-navigation-next-button"]').click()
-            } else {
-                document.querySelector('[data-automation-id="wd-CommandButton_next"]').click()
-            }
-            return
-        } else {
-            print("You are on an application questions page. Please fill out the questions and click continue.")
-            pagesleep(nav)
-            return workday(nav, form)
-        }
-    }, 2000)
+
+    }
 }
 
 function initWorkday() {
@@ -286,6 +331,6 @@ function initWorkday() {
         } else if (existstag('h2')) {
             return workday("h2", "none");
         }
-        console.log("you weren't supposed to get here");
+        console.log("you're a fucking idiot learn how to fucking code michelle wouldd never");
     }
 }
