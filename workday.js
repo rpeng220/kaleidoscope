@@ -1,5 +1,5 @@
 import {PROFILE, moveclick, existsclass, existselementid, existsquery,
-existstag, trytype, pollDOM} from "./main.js"
+existstag, trytype, pollDOM, existsxpath} from "./main.js"
 /// <reference path="jquery-3.5.1.js"/>
 
 var inputevent = new Event('input', {
@@ -216,9 +216,9 @@ function experience(nav, form) {
                     if (currenttext.includes("Degree") == false) {
                         document.querySelector("[aria-label='Add Education']").click();
                         pollDOM("//*[@data-automation-id='school']", function() {
-                            changevalue(document.querySelector("[data-automation-id='school']"), PROFILE.university);
-                            changevalue(document.querySelector("[data-automation-id='gpa']"), PROFILE.gpa);
-                            trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.uni_start_year);
+                    changevalue(document.querySelector("[data-automation-id='school']"), PROFILE.university);
+                    changevalue(document.querySelector("[data-automation-id='gpa']"), PROFILE.gpa);
+                    trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.uni_start_year);
                             trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 1, PROFILE.grad_year);
                             document.querySelector("[data-automation-id='degree']").click();
                             setTimeout(document.evaluate('//div[contains(text(), "Bachelors Degree")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click(), 800);
@@ -249,7 +249,7 @@ function experience(nav, form) {
                         setTimeout(document.querySelector('[data-automation-id="nativeLanguage"]').click(), 2300);
                     }
             //upload resume here
-            //click code goes here
+            //click code goes here if the other click doesnt owrk
                 }
             //trytypelist
             }
@@ -306,15 +306,75 @@ function experience(nav, form) {
 
                 }, 500);
             }
-        //education + language stuff
+            //education + language stuff
+            if (currenttext.includes("Degree") || existsxpath('//*[contains(text(), "Education")]//following::button[1]')) {
+                edusection = true;
+                if (currenttext.includes("Degree")) {
+                    document.evaluate('//*[contains(text(), "Education")]//following::button[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+                }
+                setTimeout(function() {
+                    trytypexpath('(//*[contains(text(), "University")])//following::input[1]', PROFILE.university);
+                    dropdownSelect('')
+                    trytypexpath('(//*[contains(text(), "Overall Result")])//following::input[1]', PROFILE.gpa);
+                    trytypelist('//*[contains(text(), "Education")]//following::*[@data-automation-id="dateWidgetInputBox"]', 0, PROFILE.uni_start_year);
+                    trytypelist('//*[contains(text(), "Education")]//following::*[@data-automation-id="dateWidgetInputBox"]', 1, PROFILE.grad_year);
+                    //major
+                }, 1200)
+                
 
 
-
-
-
+            }
+            if (currenttext.includes("native language") || existsxpath('//*[contains(text(), "Languages")]//following::button[1]')) {
+                langsection = true;
+                if (currenttext.includes("native language") == false) {
+                    document.evaluate('//*[contains(text(), "Languages")]//following::button[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+                }
+                setTimeout(function() {
+                    dropdownSelect()
+                    //dropdownselect english
+                    document.evaluate('(//label[contains(text(), "native language")])//following::div[@data-automation-id="checkboxPanel"][1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+                }, 1200)
+            }
+        //upload resume goes here
         }
-
     }
+}
+
+function workday(nav, form) {
+    setTimeout(function() {
+        var currentpage = "none";
+        if (nav == "we51") {
+            currentpage = document.evaluate('//*[@data-automation-id="taskOrchCurrentItemLabel"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).innerText;
+        }
+        if (nav == "progressbar") {
+            currentpage = document.getElementsByClassName('css-1uso8fp')[0].innerText;
+        }
+        if (nav == "h2") {
+            currentpage = document.getElementsByTagName('h2')[0].innerText;
+        }
+        var pagelower = currentpage.toLowerCase();
+        if (existsquery("[data-automation-id='bottom-navigation-next-button']")) {
+            form = "default";
+        } else if (existsquery('[data-automation-id="wd-CommandButton_next"]')) {
+            form = "custom";
+        }
+        if (pagelower.includes("quick apply")) {
+            if (form == "default") {
+                document.querySelector("[data-automation-id='bottom-navigation-next-button']").click()
+            } else {
+                document.querySelector('[data-automation-id="wd-CommandButton_next"]').click()
+            }
+        }
+        if (pagelower.includes("my information")) {
+            return personalinfo(nav, form);
+        }
+        if (pagelower.includes("my experience")) {
+            return experience(nav, form);
+        } else {
+            console.log("You are on an application questions page. Please answer and proceed.");
+            return workday(nav, form);
+        }
+    }, 2000)
 }
 
 function initWorkday() {
