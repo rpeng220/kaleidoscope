@@ -1,5 +1,5 @@
-import {PROFILE, moveclick, existsclass, existselementid, existsquery,
-existstag, trytype, pollDOM, existsxpath} from "./main.js"
+// import {PROFILE, moveclick, existsclass, existselementid, existsquery,
+// existstag, trytype, pollDOM, existsxpath} from "./main.js"
 /// <reference path="jquery-3.5.1.js"/>
 
 var inputevent = new Event('input', {
@@ -59,13 +59,18 @@ function login() {
     }
     changevalue(emailfield, PROFILE.email);
     changevalue(passwordfield, PROFILE.password);
-    moveclick('div[data-automation-id=click_filter]');
+    setTimeout(function() {
+        document.querySelector('div[data-automation-id=click_filter]').click();
+        // moveclick('div[data-automation-id=click_filter]');
+        console.log("ok rammus")
+    }, 1000);
     setTimeout(function() {
         var currenttext = document.getElementsByTagName("body")[0].innerText;
         if (currenttext.includes("ERROR: Invalid Username/Password")) {
             register(version);
         }
     }, 2000);
+    return
 }
 
 function register(version) {
@@ -378,19 +383,25 @@ function workday(nav, form) {
 }
 
 function initWorkday() {
-    moveclick('button[title="Apply"]');
+    // moveclick('button[title="Apply"]');
     var currenttext = document.getElementsByTagName("body")[0].innerText;
     var lowertext = currenttext.toLowerCase();
     if (lowertext.includes('sign in')) {
         login();
-        if (existsquery('[data-automation-id="taskOrchCurrentItemLabel"]')) {
-            return workday("we51", "none");
-        }
-        if (existsclass('css-1uso8fp')) {
-            return workday("progressbar", "none");
-        } else if (existstag('h2')) {
-            return workday("h2", "none");
-        }
-        console.log("you're a fucking idiot learn how to fucking code michelle wouldd never");
+        setTimeout(function() {
+            if (existsquery('[data-automation-id="taskOrchCurrentItemLabel"]')) {
+                return workday("we51", "none");
+            }
+            if (existsclass('css-1uso8fp')) {
+                return workday("progressbar", "none");
+            } else if (existstag('h2')) {
+                return workday("h2", "none");
+            }
+            console.log("you're");
+        }, 10000);
     }
 }
+
+// export {
+//     initWorkday
+// };

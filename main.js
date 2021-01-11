@@ -1,4 +1,4 @@
-console.log("hello peppa!");
+// import { initWorkday } from "./workday";
 
 //User profile/application info
 var PROFILE = {
@@ -134,20 +134,38 @@ function pollDOM(xpath, func) {
 }
 
 
+
 // Export helper functions
-export {
-    PROFILE,
-    existselementid,
-    existsclass,
-    existsquery,
-    existstag,
-    trytype,
-    moveclick,
-    pollDOM
-};
+// export {
+//     PROFILE,
+//     existselementid,
+//     existsclass,
+//     existsquery,
+//     existstag,
+//     trytype,
+//     moveclick,
+//     pollDOM
+// };
 
 
 // Main function. Two parts. First, detects the URL to determine application type
 // Second, calls on function inside other js files to perform the autofill.
-
-
+// function apply() {
+//     var outerhtml = document.getElementsByTagName("body")[0].outerHTML.toLowerCase();
+//     console.log("ping!")
+//     if (outerhtml.includes("greenhouse")) {
+//         console.log("target acquired");
+//         return;
+//     } else if (outerhtml.includes("workday")) {
+//         return initWorkday();
+//     } else if (outerhtml.includes("taleo")) {
+//         return;
+//     } else if (outerhtml.includes("lever")) {
+//         return; 
+//     } else if (outerhtml.includes("jobvite")) {
+//         return;
+//     } else {
+//         console.log("incorrect page")
+//         return;
+//     }
+// }

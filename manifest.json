@@ -12,7 +12,7 @@
     {
       "matches": ["<all_urls>"],
       "run_at": "document_end",
-      "js": ["content.js", "config.js"]
+      "js": ["content.js", "config.js", "main.js", "workday.js", "greenhouse.js"]
     }
   ],
 
