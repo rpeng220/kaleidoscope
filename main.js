@@ -124,15 +124,45 @@ function moveclick(query) {
 }
 
 // Waits for element found by xpath to be present before continuing.
-function pollDOM(xpath, func) {
-    var el = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
-    if (el) {
-        return func();
-  } else {
-    setTimeout(pollDOM, 300); // try again in 300 milliseconds
-  }
+function pollDOM(target, parent, func) {
+    console.log("pollDOM running")
+    var observer = new MutationObserver(function(mutations){
+        if(target) {
+          func();
+          observer.disconnect(); // to stop observing the dom
+        }
+      })
+      observer.observe(parent, { 
+        childList: true,
+        subtree: true // needed if the node you're targeting is not the direct parent
+      });
 }
 
+function waitForElement(selector) {
+    return new Promise(function(resolve, reject) {
+      var element = document.querySelector(selector);
+  
+      if(element) {
+        resolve(element);
+        return;
+      }
+  
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          var nodes = Array.from(mutation.addedNodes);
+          for(var node of nodes) {
+            if(node.matches && node.matches(selector)) {
+              observer.disconnect();
+              resolve(node);
+              return;
+            }
+          };
+        });
+      });
+  
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+    });
+  }
 
 
 // Export helper functions

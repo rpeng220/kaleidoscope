@@ -20,9 +20,14 @@ function greenhouse() {
         trytype("input[aria-label='Education End Year']", PROFILE.grad_year)
         var testevent = new Event("mousedown");
         document.getElementsByClassName("select2-choice select2-default")[0].dispatchEvent(testevent);
-        // document.querySelector("#select2-drop > div > input").value = "University of California - Berkeley";
-        // var testevent2 = new Event("keyup-change");
-        // document.querySelector("#select2-drop > div > input").dispatchEvent(testevent2);
+        console.log("success4");
+        function testo() { 
+            document.querySelector("#select2-drop > div > input").value = "University of California - Berkeley";
+            console.log("success5");
+            var testevent2 = new Event("keyup-change");
+            document.querySelector("#select2-drop > div > input").dispatchEvent(testevent2);
+        }
+        waitForElement("#select2-drop > div > input").then(testo());
         // var testevent3 = new Event("mouseup");
         // document.querySelector("#select2-drop").dispatchEvent(testevent3);
 
