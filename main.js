@@ -164,6 +164,45 @@ function waitForElement(selector) {
     });
   }
 
+  function waitForXPath(xpath) {
+    return new Promise(function(resolve, reject) {
+      var element = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+  
+      if(element) {
+        resolve(element);
+        return;
+      }
+  
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          var nodes = Array.from(mutation.addedNodes);
+          for(var node of nodes) {
+            if(node.matches && (node == document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0))) {
+              observer.disconnect();
+              resolve(node);
+              return;
+            }
+          };
+        });
+      });
+  
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+    });
+  }
+
+  /**
+ * Set Select Box Selection By Text
+ * @param eid Element ID
+ * @param eval Element Index
+ */
+function setSelectBoxByText(eid, etxt) {
+  var eid = document.getElementById(eid);
+  for (var i = 0; i < eid.options.length; ++i) {
+      if (eid.options[i].text === etxt)
+          eid.options[i].selected = true;
+  }
+}
+
 
 // Export helper functions
 // export {

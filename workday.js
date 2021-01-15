@@ -46,7 +46,7 @@ function dropdownSelect(xpath1, xpath2) {
     pollDOM(xpath2, document.evaluate(xpath2, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click())
 } 
 
-function login() {
+function workdayLogin() {
     var version = "none"
     var emailfield = document.querySelector("input[data-automation-id=email]");
     var passwordfield = document.querySelector("input[data-automation-id=password]"); 
@@ -118,7 +118,7 @@ function register(version) {
 }
 
 // Having problems with string parsing literal quotations into encapsulated_state
-function personalinfo(nav, form) {
+function workdayPersonalinfo(nav, form) {
     var encapsulated_state = "\"" + PROFILE.state + "\"";
     function clickonstate() {
         var targetstate = document.evaluate('//div[contains(text(), "California")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
@@ -133,32 +133,34 @@ function personalinfo(nav, form) {
         trytypeworkday('[data-automation-id="phone-number"]', PROFILE.phone);
         const state = document.evaluate('//label[contains(text(), "State")]//following::button[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         state.click();
-        setTimeout(clickonstate, 800);
+        waitForXPath('//div[contains(text(), "California")]').then(clickonstate());
+        // setTimeout(clickonstate, 800);
         // pollDOM('//div[contains(text(),' + encapsulated_state + ')]', clickonstate);
     }
     if (form == "custom") { 
         const firstname = document.evaluate('//*[contains(text(), "First Name")]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         const lastname = document.evaluate('//*[contains(text(), "Last Name")]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
-        changevalue(firstname, PROFILE.firstname);
-        changevalue(lastname, PROFILE.lastname);
+        changevalue(firstname, PROFILE.first_name);
+        changevalue(lastname, PROFILE.last_name);
         const address = document.evaluate("//*[contains(text(), 'Address Line 1')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         const city = document.evaluate("//*[contains(text(), 'City')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         const zipcode = document.evaluate("//*[contains(text(), 'Postal Code')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         const state = document.evaluate('//label[contains(text(), "State")]//following::div[2]//div[1]//div[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
-        changevalue(address, PROFILE.address);
+        changevalue(address, PROFILE.street_address);
         changevalue(city, PROFILE.city);
         changevalue(zipcode, PROFILE.zip_code);
-        state.click();
-        setTimeout(clickonstate, 800);
-        // pollDOM('//div[contains(text(),' + encapsulated_state + ')]', clickonstate);
-        const phone = document.evaluate("//*[contains(text(), 'Phone Number')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+        const phone = document.evaluate("//*[contains(text(), 'Phone Number')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(1);
         changevalue(phone, PROFILE.phone);
+        state.click();
+        waitForXPath('//div[contains(text(), "California")]').then(clickonstate());
+        // setTimeout(clickonstate, 800);
+        // pollDOM('//div[contains(text(),' + encapsulated_state + ')]', clickonstate);
     }
     //done, send notification and wait for next page, then call workday func
-    return workday(nav, form);
+    return;
 }
 
-function experience(nav, form) {
+function workdayExperience(nav, form) {
     var datecount = 1;
     var currenttext = document.getElementsByTagName("body")[0].innerText;
     var edusection = false;
@@ -325,9 +327,6 @@ function experience(nav, form) {
                     trytypelist('//*[contains(text(), "Education")]//following::*[@data-automation-id="dateWidgetInputBox"]', 1, PROFILE.grad_year);
                     //major
                 }, 1200)
-                
-
-
             }
             if (currenttext.includes("native language") || existsxpath('//*[contains(text(), "Languages")]//following::button[1]')) {
                 langsection = true;
@@ -346,61 +345,130 @@ function experience(nav, form) {
 }
 
 function workday(nav, form) {
-    setTimeout(function() {
-        var currentpage = "none";
-        if (nav == "we51") {
-            currentpage = document.evaluate('//*[@data-automation-id="taskOrchCurrentItemLabel"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).innerText;
-        }
-        if (nav == "progressbar") {
-            currentpage = document.getElementsByClassName('css-1uso8fp')[0].innerText;
-        }
-        if (nav == "h2") {
-            currentpage = document.getElementsByTagName('h2')[0].innerText;
-        }
-        var pagelower = currentpage.toLowerCase();
-        if (existsquery("[data-automation-id='bottom-navigation-next-button']")) {
-            form = "default";
-        } else if (existsquery('[data-automation-id="wd-CommandButton_next"]')) {
-            form = "custom";
-        }
-        if (pagelower.includes("quick apply")) {
-            if (form == "default") {
-                document.querySelector("[data-automation-id='bottom-navigation-next-button']").click()
-            } else {
-                document.querySelector('[data-automation-id="wd-CommandButton_next"]').click()
-            }
-        }
-        if (pagelower.includes("my information")) {
-            return personalinfo(nav, form);
-        }
-        if (pagelower.includes("my experience")) {
-            return experience(nav, form);
-        } else {
-            console.log("You are on an application questions page. Please answer and proceed.");
-            return workday(nav, form);
-        }
-    }, 2000)
-}
-
-function initWorkday() {
-    // moveclick('button[title="Apply"]');
+    //wait for DOM pageload to complete
+    console.log("dom loaded")
     var currenttext = document.getElementsByTagName("body")[0].innerText;
     var lowertext = currenttext.toLowerCase();
     if (lowertext.includes('sign in')) {
-        login();
-        setTimeout(function() {
-            if (existsquery('[data-automation-id="taskOrchCurrentItemLabel"]')) {
-                return workday("we51", "none");
-            }
-            if (existsclass('css-1uso8fp')) {
-                return workday("progressbar", "none");
-            } else if (existstag('h2')) {
-                return workday("h2", "none");
-            }
-            console.log("you're");
-        }, 10000);
+        console.log("logging in");
+        return workdayLogin();
+    }
+    var currentpage = "none";
+    var currentelement;
+    if (existsquery('[data-automation-id="taskOrchCurrentItemLabel"]')) {
+        nav = 1;
+        currentelement = document.evaluate('//*[@data-automation-id="taskOrchCurrentItemLabel"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+        currentpage = document.evaluate('//*[@data-automation-id="taskOrchCurrentItemLabel"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).innerText;
+    }
+    if (existsclass('css-1uso8fp')) {
+        nav = 2;
+        currentelement = document.getElementsByClassName('css-1uso8fp')[0];
+        currentpage = document.getElementsByClassName('css-1uso8fp')[0].innerText;
+    } else if (existstag('h2')) {
+        nav = 3;
+        currentelement = document.getElementsByTagName('h2')[0];
+        currentpage = document.getElementsByTagName('h2')[0].innerText;
+    }
+    var pagelower = currentpage.toLowerCase();
+    var clickelement;
+    if (existsquery("[data-automation-id='bottom-navigation-next-button']")) {
+        form = "default";
+        clickelement = document.querySelector("[data-automation-id='bottom-navigation-next-button']");
+    } else if (existsquery('[data-automation-id="wd-CommandButton_next"]')) {
+        form = "custom";
+        clickelement = document.querySelector('[data-automation-id="wd-CommandButton_next"]');
+    }
+        // console.log(pagelower.includes("quick apply"));
+        // if (pagelower.includes("quick apply")) {
+        //     console.log("got here");
+        //     if (form == "default") {
+        //         document.querySelector("[data-automation-id='bottom-navigation-next-button']").click()
+        //     } else {
+        //         document.querySelector('[data-automation-id="wd-CommandButton_next"]').click()
+        //     }
+        // }
+    if (pagelower.includes("my information")) {
+        return workdayPersonalinfo(nav, form);
+    }
+    if (pagelower.includes("my experience")) {
+        return workdayExperience(nav, form);
+    } else {
+        console.log("creating observer");
+        function pagechange() {
+            setTimeout(function() {
+                console.log("checking")
+                if (currentelement) {
+                    return workday(nav, form);
+                }
+            }, 7000);
+        }
+        clickelement.addEventListener("click", pagechange);
+        // function checkforchange() {
+        //     if (nav == 1) {
+        //         currentpage2 = document.evaluate('//*[@data-automation-id="taskOrchCurrentItemLabel"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).innerText;
+        //     } else if (nav == 2) {
+        //         currentpage2 = document.getElementsByClassName('css-1uso8fp')[0].innerText;
+        //     } else if (nav == 3) {
+        //         currentpage2 = document.getElementsByTagName('h2')[0].innerText;
+        //     }
+        //     if (currentpage2 == currentpage) {
+        //         document.removeEventListener("DOMContentLoaded");
+        //         console.log("different page, return workday");
+        //         // observer.disconnect()
+        //         return workday(nav, form)
+        //     }
+        // }
+        // document.addEventListener("DOMContentLoaded", checkforchange());
+        // ORRRR use event listener here with the conditional below....
+        // var observer = new MutationObserver(mutations => {
+        //     for(let mutation of mutations) {
+                
+        //         var currentpage2 = "none";
+        //         if (nav == 1) {
+        //             currentpage2 = document.evaluate('//*[@data-automation-id="taskOrchCurrentItemLabel"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).innerText;
+        //         } else if (nav == 2) {
+        //             currentpage2 = document.getElementsByClassName('css-1uso8fp')[0].innerText;
+        //         } else if (nav == 3) {
+        //             currentpage2 = document.getElementsByTagName('h2')[0].innerText;
+        //         }
+        //         console.log("yo whatup");
+        //         console.log(currentpage);
+        //         if (currentpage2 == currentpage) {
+        //             console.log("different page, return workday");
+        //             observer.disconnect()
+        //             return workday(nav, form)
+        //         }
+        //      }
+        //  });
+        //  observer.observe(document, { childList: true, subtree: true });
     }
 }
+
+//        document.addEventListener("DOMContentLoaded", workday(nav, form));
+
+
+// function initWorkday() {
+//     var currenttext = document.getElementsByTagName("body")[0].innerText;
+//     var lowertext = currenttext.toLowerCase();
+//     if (lowertext.includes('sign in')) {
+//         login();
+        // setTimeout(function() {
+        //     console.log("init workday");
+        //     if (existsquery('[data-automation-id="taskOrchCurrentItemLabel"]')) {
+        //         console.log("uno");
+        //         return workday("we51", "none");
+        //     }
+        //     if (existsclass('css-1uso8fp')) {
+        //         console.log("dos");
+        //         return workday("progressbar", "none");
+        //     } else if (existstag('h2')) {
+        //         console.log("tres");
+        //         return workday("h2", "none");
+        //     }
+        //     console.log("you're");
+        // }, 10000);
+//     }
+// }
 
 // export {
 //     initWorkday

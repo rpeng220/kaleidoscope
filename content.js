@@ -14,13 +14,20 @@
 
 // }
 
-// window.addEventListener('load', function() {  
-    
-//     setTimeout(function(){ 
-//        console.log("AA");
-//        setV();
-// }, 3000);
-// });
+var isWorkdayload = false;
+
+window.addEventListener('load', function() {
+    console.log(document.readyState);
+    isWorkdayload = false;
+    if (existsquery("input[id='first_name']")) {
+      console.log("success2");
+      greenhouse();
+  }
+    if (window.location.toString().includes("myworkdayjobs")) {
+      console.log("workday detected");
+      setTimeout(function () {workday()}, 7000);
+  }
+});
 
 
 // document.addEventListener('visibilitychange', function(){
@@ -31,13 +38,5 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === 'TabUpdated') {
       console.log(document.location.href);
-      console.log("success1");
-      if (existsquery("input[id='first_name']")) {
-          console.log("success2");
-          greenhouse();
-      } else if (existsquery("input[data-automation-id=email]")) {
-          console.log("success3");
-          initWorkday();
-      }
     }
   })
