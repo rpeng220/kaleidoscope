@@ -7,6 +7,16 @@ var inputevent = new Event('input', {
     cancelable: true,
 });
 
+var inputevent2 = new Event('input', {
+    bubbles: true,
+    cancelable: false,
+});
+
+var textinputevent = new Event('textInput', {
+    bubbles: true,
+    cancelable: true,
+});
+
 // Helper function to handle workday events. Fills out an input field and updates the value with site JS.
 function changevalue(element, stringval) {
     element.value = stringval;
@@ -16,8 +26,11 @@ function changevalue(element, stringval) {
 function trytypexpath(xpath, stringval) {
     ele = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
     if (ele) {
+        ele.click()
         ele.value = stringval;
-        ele.dispatchEvent(inputevent);
+        ele.dispatchEvent(inputevent2);
+        ele.dispatchEvent(textinputevent);
+        ele.click()
     }
 }
 
@@ -26,8 +39,10 @@ function trytypexpath(xpath, stringval) {
 function trytypeworkday(query, stringval) {
     if (existsquery(query)) {
         var element = document.querySelector(query);
+        element.click()
         element.value = stringval;
-        element.dispatchEvent(inputevent);
+        element.dispatchEvent(inputevent2);
+        element.click()
     }
 }
 
@@ -35,8 +50,10 @@ function trytypeworkday(query, stringval) {
 function trytypelist(xpath, posn, stringval) {
     var ele = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(posn);
     if (ele) {
+        ele.click()
         ele.value = stringval;
-        ele.dispatchEvent(inputevent);
+        ele.dispatchEvent(inputevent2);
+        ele.click()
     }
 } 
 
@@ -140,7 +157,8 @@ function workdayPersonalinfo(nav, form) {
     if (form == "custom") { 
         const firstname = document.evaluate('//*[contains(text(), "First Name")]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         const lastname = document.evaluate('//*[contains(text(), "Last Name")]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
-        changevalue(firstname, PROFILE.first_name);
+        trytypexpath('//*[contains(text(), "First Name")]//following::input[1]', PROFILE.first_name);
+        // changevalue(firstname, PROFILE.first_name);
         changevalue(lastname, PROFILE.last_name);
         const address = document.evaluate("//*[contains(text(), 'Address Line 1')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         const city = document.evaluate("//*[contains(text(), 'City')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);

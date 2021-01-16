@@ -1,12 +1,14 @@
 ## Kaleidoscope (formerly AutoApply)
 
 ### To do:
-* Create main function
+* Create main function - done pretty much
 * Port Greenhouse
-* Port Lever
+* Port Lever - DONE
+* Port Workday
+* Port Taleo
 
 ### Reminders
-* Ignore resume upload for now
+* Ignore resume upload for now - Resume upload has been resolved
 * Check if passes CAPTCHA - text value change passes CAPTCHA
 * Core offerings: taleo, workday, successfactors, greenhouse, lever/jobvite
 

@@ -17,15 +17,24 @@
 var isWorkdayload = false;
 
 window.addEventListener('load', function() {
-    console.log(document.readyState);
-    isWorkdayload = false;
-    if (existsquery("input[id='first_name']")) {
-      console.log("success2");
-      greenhouse();
+  console.log(document.readyState);
+  isWorkdayload = false;
+  var currenturl = window.location.toString();
+  if (existsquery("input[id='first_name']")) {
+    console.log("success2");
+    greenhouse();
   }
-    if (window.location.toString().includes("myworkdayjobs")) {
-      console.log("workday detected");
-      setTimeout(function () {workday()}, 7000);
+  if (window.location.toString().includes("myworkdayjobs")) {
+    console.log("workday detected");
+    setTimeout(function() {workday()}, 7000);
+  }
+  if (window.location.toString().includes("taleo")) {
+    console.log("taleo detected");
+    setTimeout(function() {taleo()}, 8000);
+  }
+  if (currenturl.includes('lever.co') && currenturl.includes('/apply')) {
+    console.log("lever detected")
+    setTimeout(function() {lever()}, 5000);
   }
 });
 
