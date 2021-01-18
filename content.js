@@ -15,6 +15,7 @@
 // }
 
 var isWorkdayload = false;
+var taleoflag = false;
 
 window.addEventListener('load', function() {
   console.log(document.readyState);
@@ -26,9 +27,9 @@ window.addEventListener('load', function() {
   }
   if (window.location.toString().includes("myworkdayjobs")) {
     console.log("workday detected");
-    setTimeout(function() {workday()}, 7000);
+    setTimeout(function() {workday()}, 15000);
   }
-  if (window.location.toString().includes("taleo")) {
+  if (window.location.toString().includes("taleo") && taleoflag == false) {
     console.log("taleo detected");
     setTimeout(function() {taleo()}, 8000);
   }

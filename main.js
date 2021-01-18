@@ -17,6 +17,7 @@ var PROFILE = {
     uni_city: "Berkeley",
     gpa: 4,
     major: "Economics",
+    degree: "Bachelor",
     uni_start_month: 8,
     uni_start_year: "2017",
     grad_month: 9,
@@ -55,7 +56,7 @@ var PROFILE = {
     job_desc3: `lead job market efforts,
     doubled retention rates,
     pipeline two million`,
-    username: "uniquepugs224",
+    username: "uniquepugs223",
     password: "Awesomepasword!1",
     question: "bagool",
     answer: "bafool"
