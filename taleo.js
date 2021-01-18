@@ -181,15 +181,15 @@ function taleo() {
         if (document.getElementById("editTemplateMultipart-editForm-content-ftf-saveContinueCmdBottom")) {
             clickelement = document.getElementById("editTemplateMultipart-editForm-content-ftf-saveContinueCmdBottom");
         }
-        function pagechange() {
-            setTimeout(function() {
-                console.log("checking")
-                return taleo();
-            }, 7000);
-        }
-        clickelement.addEventListener("click", pagechange);
+        // function pagechange() {
+        //     setTimeout(function() {
+        //         console.log("checking")
+        //         return taleo();
+        //     }, 7000);
+        // }
+        // clickelement.addEventListener("click", pagechange);
         return;
     }    
-    //click detect
+    //click detect not needed
 
 }
