@@ -48,6 +48,7 @@ function taleoPersonalinfo() {
     //select country > state
     var countryselect = document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-0");
     countryselect.value = document.evaluate('//*[@id="et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-0"]//option[contains(text(), "United States")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).value;
+    countryselect.dispatchEvent(inputevent2);
     countryselect.dispatchEvent(changeevent);
 }
 

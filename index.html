@@ -13,8 +13,101 @@
   <body>
       <h1> upload your resume </h1>
       <input type="file" id="options_button" /><br>
-   
-   <input type="text" id="lname" name="lname"><br><br>
-   <button type="button" id="submit"> Submit </button>
+  <form class="form-horizontal">
+    <fieldset>
+    <label for="fname">First Name</label><br>
+    <input type="text" id="fname" name="fname"><br>
+    <label for="lname">Last Name</label><br>
+    <input type="text" id="lname" name="lname"><br>
+    <label for="email">Email</label><br>
+    <input type="text" id="email" name="email"><br>
+    <label for="phone">Phone</label><br>
+    <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"><br>
+    <label for="linkedin">LinkedIn</label><br>
+    <input type="url" id="linkedin" name="linkedin"><br>
+    <label for="website">Website</label><br>
+    <input type="url" id="website" name="website"><br>
+    <label for="github">Github</label><br>
+    <input type="url" id="github" name="github"><br>
+    <label for="street_address">Street Address</label><br>
+    <input type="text" id="street_address" name="street_address"><br>
+    <label for="city">City</label><br>
+    <input type="text" id="city" name="city"><br>
+    <label for="zip_code">ZIP Code</label><br>
+    <input type="text" id="zip_code" name="zip_code"><br>
+    <label for="university">University</label><br>
+    <input type="text" id="university" name="university"><br>
+    <label for="uni_city">University City</label><br>
+    <input type="text" id="uni_city" name="uni_city"><br>
+    <label for="gpa">GPA</label><br>
+    <input type="text" id="gpa" name="gpa"><br>
+    <label for="major">Major</label><br>
+    <input type="text" id="major" name="major"><br>
+    <label for="uni_start">University Start Date</label><br>
+    <input type="month" id="uni_start" name="uni_start"><br>
+    <label for="job_start1">Graduation Date</label><br>
+    <input type="month" id="grad_date" name="grad_date"><br>
+    <label for="degree_received">Degree Received</label>
+    <input type="checkbox" id="degree_received" name="degree_received" value=1><br>
+    <label for="employer1">Employer 1</label><br>
+    <input type="text" id="employer1" name="employer1"><br>
+    <label for="job_title1">Job 1 Title </label><br>
+    <input type="text" id="job_title1" name="job_title1"><br>
+    <label for="current_job1">Current Job</label>
+    <input type="checkbox" id="current_job1" name="current_job1" value=1><br>
+    <label for="job_location1">Job 1 Location</label><br>
+    <input type="text" id="job_location1" name="job_location1"><br>
+    <label for="job_start1">Job 1 Start Date</label><br>
+    <input type="month" id="job_start1" name="job_start1"><br>
+    <label for="job_end1">Job 1 End Date</label><br>
+    <input type="month" id="job_end1" name="job_end1"><br>
+    <label class="col-md-4 control-label" for="textarea">Job 1 Description</label>
+    <div class="col-md-4">                     
+      <textarea class="form-control" id="job_desc1" name="job_desc1"></textarea>
+    </div>
+    <label for="employer2">Employer 2</label><br>
+    <input type="text" id="employer2" name="employer2"><br>
+    <label for="job_title2">Job 2 Title </label><br>
+    <input type="text" id="job_title2" name="job_title2"><br>
+    <label for="current_job2">Current Job</label>
+    <input type="checkbox" id="current_job2" name="current_job2" value=2><br>
+    <label for="job_location2">Job 2 Location</label><br>
+    <input type="text" id="job_location2" name="job_location2"><br>
+    <label for="job_start2">Job 2 Start Date</label><br>
+    <input type="month" id="job_start2" name="job_start2"><br>
+    <label for="job_end2">Job 2 End Date</label><br>
+    <input type="month" id="job_end2" name="job_end2"><br>
+    <label class="col-md-4 control-label" for="textarea">Job 2 Description</label>
+    <div class="col-md-4">                     
+      <textarea class="form-control" id="job_desc2" name="job_desc2"></textarea>
+    </div>
+    <label for="employer3">Employer 3</label><br>
+    <input type="text" id="employer3" name="employer3"><br>
+    <label for="job_title3">Job 3 Title </label><br>
+    <input type="text" id="job_title3" name="job_title3"><br>
+    <label for="current_job3">Current Job</label>
+    <input type="checkbox" id="current_job3" name="current_job3" value=3><br>
+    <label for="job_location3">Job 3 Location</label><br>
+    <input type="text" id="job_location3" name="job_location3"><br>
+    <label for="job_start3">Job 3 Start Date</label><br>
+    <input type="month" id="job_start3" name="job_start3"><br>
+    <label for="job_end3">Job 3 End Date</label><br>
+    <input type="month" id="job_end3" name="job_end3"><br>
+    <label class="col-md-4 control-label" for="textarea">Job 3 Description</label>
+    <div class="col-md-4">                     
+      <textarea class="form-control" id="job_desc3" name="job_desc3"></textarea>
+    </div>
+    <label for="username">Username</label><br>
+    <input type="text" id="username" name="username"><br>
+    <label for="password">Password</label><br>
+    <input type="password" id="password" name="password"><br>
+    <label for="question">Security Question</label><br>
+    <input type="text" id="question" name="question"><br>
+    <label for="answer">Security Question Answer</label><br>
+    <input type="text" id="answer" name="answer"><br>
+
+    </fieldset>
+  </form>
+  <button type="button" id="submit"> Submit </button>
   </body>
 </html>
