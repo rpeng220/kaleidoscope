@@ -161,7 +161,7 @@ function taleoExperience() {
     dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + y + '-csef-efi-0-frm-dv_cs_education_graduationDate.year', PROFILE.grad_year);
     setTimeout(function() {
         taleoflag = false;
-    }, 30000)
+    }, 50000)
 }
 
 function taleo() {
