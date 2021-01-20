@@ -21,6 +21,11 @@ var keydownevent = new Event('keydown', {
     bubbles: true,
 });
 
+var selectevent = new Event('select', { 
+    bubbles: true,
+    cancelable: false,
+})
+
 // Helper function to handle workday events. Fills out an input field and updates the value with site JS.
 function changevalue(element, stringval) {
     element.value = stringval;
@@ -57,7 +62,9 @@ function trytypelist(xpath, posn, stringval) {
 function dropdownSelect(xpath1, xpath2) {
     var dropdown = document.evaluate(xpath1, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
     dropdown.click()
-    waitForXPath(xpath2).then(document.evaluate(xpath2, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click());
+    waitForXPath(xpath2).then(function() {
+        document.evaluate(xpath2, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click()
+    });
 } 
 
 function workdayLogin() {
@@ -133,9 +140,8 @@ function register(version) {
 
 // Having problems with string parsing literal quotations into encapsulated_state
 function workdayPersonalinfo(nav, form) {
-    var encapsulated_state = "\"" + PROFILE.state + "\"";
     function clickonstate() {
-        var targetstate = document.evaluate('//div[contains(text(), "California")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+        var targetstate = document.evaluate('//div[contains(text(), "' + PROFILE.state + '")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         targetstate.click();
     }
     if (form == "default") { //we don't want to rely on page ordering if we don't have to, so this is the default.
@@ -148,18 +154,10 @@ function workdayPersonalinfo(nav, form) {
         const state = document.evaluate('//label[contains(text(), "State")]//following::button[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         state.click();
         waitForXPath('//div[contains(text(), "California")]').then(clickonstate());
-        // setTimeout(clickonstate, 800);
-        // pollDOM('//div[contains(text(),' + encapsulated_state + ')]', clickonstate);
     }
     if (form == "custom") { 
-        const firstname = document.evaluate('//*[contains(text(), "First Name")]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
-        const lastname = document.evaluate('//*[contains(text(), "Last Name")]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         trytypexpath('//*[contains(text(), "First Name")]//following::input[1]', PROFILE.first_name);
-        // changevalue(firstname, PROFILE.first_name);
         trytypexpath('//*[contains(text(), "Last Name")]//following::input[1]', PROFILE.last_name);
-        const address = document.evaluate("//*[contains(text(), 'Address Line 1')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
-        const city = document.evaluate("//*[contains(text(), 'City')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
-        const zipcode = document.evaluate("//*[contains(text(), 'Postal Code')]//following::input[1]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         const state = document.evaluate('//label[contains(text(), "State")]//following::div[2]//div[1]//div[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         trytypexpath("//*[contains(text(), 'Address Line 1')]//following::input[1]", PROFILE.street_address);
         trytypexpath("//*[contains(text(), 'City')]//following::input[1]", PROFILE.city);
@@ -168,9 +166,7 @@ function workdayPersonalinfo(nav, form) {
         phone.value = PROFILE.phone;
         phone.dispatchEvent(changeevent);
         state.click();
-        waitForXPath('//div[contains(text(), "California")]').then(clickonstate());
-        // setTimeout(clickonstate, 800);
-        // pollDOM('//div[contains(text(),' + encapsulated_state + ')]', clickonstate);
+        waitForXPath('//div[contains(text(), "' + PROFILE.state + '")]').then(clickonstate());
     }
     //done, send notification and wait for next page, then call workday func
     return;
@@ -197,9 +193,9 @@ function workdayExperience(nav, form) {
                 datecount += 1;
             }
             if (PROFILE.employer2 != "") {
-                pollDOM('//*[@aria-label="Add Another Work Experience"]', function() {
+                waitForXPath('//*[@aria-label="Add Another Work Experience"]').then(function() {
                     document.querySelector('[aria-label="Add Another Work Experience"]').click()
-                    pollDOM('(//*[@data-automation-id="jobTitle"])[2]', function() {
+                    waitForXPath('(//*[@data-automation-id="jobTitle"])[2]').then(function() {
                         trytypelist('//*[@data-automation-id="jobTitle"]', 1, PROFILE.job_title2);
                         trytypelist('//*[@data-automation-id="company"]', 1, PROFILE.employer2);
                         trytypelist('//*[@data-automation-id="location"]', 1, PROFILE.job_location2);
@@ -213,9 +209,9 @@ function workdayExperience(nav, form) {
                             datecount += 1;
                         }
                         if (PROFILE.employer3 != "") {
-                            pollDOM('//*[@aria-label="Add Another Work Experience"]', function() {
+                            waitForElement('[aria-label="Add Another Work Experience"]').then(function() {
                                 document.querySelector('[aria-label="Add Another Work Experience"]').click()
-                                pollDOM('(//*[@data-automation-id="jobTitle"])[3]', function() {
+                                waitForXPath('(//*[@data-automation-id="jobTitle"])[3]').then(function() {
                                     trytypelist('//*[@data-automation-id="jobTitle"]', 2, PROFILE.job_title3);
                                     trytypelist('//*[@data-automation-id="company"]', 2, PROFILE.employer3);
                                     trytypelist('//*[@data-automation-id="location"]', 2, PROFILE.job_location3);
@@ -238,7 +234,7 @@ function workdayExperience(nav, form) {
                     edusection = true;
                     if (currenttext.includes("Degree") == false) {
                         document.querySelector("[aria-label='Add Education']").click();
-                        pollDOM("//*[@data-automation-id='school']", function() {
+                        waitForElement("[data-automation-id='school']").then(function() {
                     changevalue(document.querySelector("[data-automation-id='school']"), PROFILE.university);
                     changevalue(document.querySelector("[data-automation-id='gpa']"), PROFILE.gpa);
                     trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.uni_start_year);
@@ -276,7 +272,7 @@ function workdayExperience(nav, form) {
                 }
             //trytypelist
             }
-        pollDOM('//*[@data-automation-id="jobTitle"]', defaultfunc())
+        waitForElement('[data-automation-id="jobTitle"]').then(defaultfunc())
         }
     }
     if (form == "custom") {
@@ -289,7 +285,19 @@ function workdayExperience(nav, form) {
             trytypexpath('//*[contains(text(), "Company")]//following::input[1]', PROFILE.employer1);
             trytypexpath('//*[contains(text(), "Location")]//following::input[1]', PROFILE.job_location1);
             trytypexpath('//*[contains(text(), "Role Description")]//following::textarea[1]', PROFILE.job_desc1);
-            trytypexpath('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', PROFILE.job_start_month1 + PROFILE.job_start_year1);
+            job1input = document.evaluate('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+            var jobstart1month = document.evaluate('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateSectionMonth"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+            job1input.dispatchEvent(selectevent);
+            jobstart1month.setAttribute("aria-valuenow", PROFILE.grad_month);
+            jobstart1month.innerText = PROFILE.grad_month;
+            job1input.dispatchEvent(inputevent2);
+            // jobstart1month.dispatchEvent(changeevent);
+            var jobstart2month = document.evaluate('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateSectionYear"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
+            jobstart2month.setAttribute("aria-valuenow", PROFILE.job_start_year1);
+            jobstart2month.innerText = PROFILE.job_start_year1
+            job1input.dispatchEvent(inputevent2);
+            job1input.dispatchEvent(changeevent);
+            // trytypexpath('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', PROFILE.job_start_month1 + PROFILE.job_start_year1);
             if (PROFILE.current_job1 == 1) {
                 document.evaluate('(//label[contains(text(), "currently work here")])[1]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
             } else {
@@ -341,7 +349,7 @@ function workdayExperience(nav, form) {
                 setTimeout(function() {
                     trytypexpath('(//*[contains(text(), "University")])//following::input[1]', PROFILE.university);
                     //change degree type later
-                    // dropdownSelect('//*[contains(text(), "Degree")]//following::*[@data-automation-id="selectWidget"][1]', '//*[@data-automation-label="Bachelor Degree"]')
+                    dropdownSelect('//*[contains(text(), "Degree")]//following::*[@data-automation-id="selectWidget"][1]', '//*[@data-automation-label="' + PROFILE.degree + '"]')
                     trytypexpath('(//*[contains(text(), "Overall Result")])//following::input[1]', PROFILE.gpa);
                     trytypelist('//*[contains(text(), "Education")]//following::*[@data-automation-id="dateWidgetInputBox"]', 0, PROFILE.uni_start_year);
                     trytypelist('//*[contains(text(), "Education")]//following::*[@data-automation-id="dateWidgetInputBox"]', 1, PROFILE.grad_year);
@@ -354,10 +362,10 @@ function workdayExperience(nav, form) {
                     document.evaluate('//*[contains(text(), "Languages")]//following::button[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
                 }
                 setTimeout(function() {
-                    dropdownSelect()
-                    //dropdownselect english
+                    // dropdownSelect('//label[contains(text(), "Language")]//following::*[@data-automation-id="selectWidget"][1]', '//*[@data-automation-label="English"]')
+                    //need to learn how to close the degree dropdown first
                     document.evaluate('(//label[contains(text(), "native language")])//following::div[@data-automation-id="checkboxPanel"][1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
-                }, 1200)
+                }, 6000)
             }
         //upload resume goes here
         }

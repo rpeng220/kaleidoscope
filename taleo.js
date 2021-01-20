@@ -152,7 +152,7 @@ function taleoExperience() {
     tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + y + '-csef-efi-0-frm-dv_cs_education_gpa', PROFILE.gpa);
     tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + y + '-csef-efi-0-frm-dv_cs_education_gpaRange', '4');
     var degreeselect = document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + y + '-csef-efi-0-frm-dv_cs_education_StudyLevel')
-    degreeselect.value = document.evaluate('//*[@id="et-ef-content-ftf-gp-j_id_id16pc9-page_' + y + '-csef-efi-0-frm-dv_cs_education_StudyLevel"]//option[contains(text(), "Bachelor")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).value;
+    degreeselect.value = document.evaluate('//*[@id="et-ef-content-ftf-gp-j_id_id16pc9-page_' + y + '-csef-efi-0-frm-dv_cs_education_StudyLevel"]//option[contains(text(), "' + PROFILE.degree + '")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).value;
     degreeselect.dispatchEvent(inputevent2);
     degreeselect.dispatchEvent(changeevent);
     dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + y + '-csef-efi-0-frm-dv_cs_education_startDate.month', PROFILE.uni_start_month - 1);

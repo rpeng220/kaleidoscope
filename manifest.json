@@ -1,5 +1,5 @@
 {
-  "name": "autoapply2",
+  "name": "Kumquat",
   "version": "1.0",
   "description": "auto apply2",
   "permissions": ["contextMenus", "tabs",  "notifications", "storage", "http://*/*", "https://*/*"],
@@ -18,5 +18,14 @@
 
   "web_accessible_resources": ["index.html"],
   
-  "manifest_version": 2
+  "manifest_version": 2,
+  "icons": { 
+    "16": "kumquat.png",
+    "48": "kumquat.png",
+    "128": "kumquat.png"
+  },
+  "browser_action": {
+      "default_icon": "kumquat.png",
+      "default_popup": "index.html"
+  }
 }

@@ -51,36 +51,9 @@ function greenhouse() {
         trytype("input[aria-label='Education Start Year']", PROFILE.uni_start_year)
         trytype("input[aria-label='Education End Month']", PROFILE.grad_month)
         trytype("input[aria-label='Education End Year']", PROFILE.grad_year)
-        var testevent = new Event("mousedown");
-        var a1 = document.getElementsByClassName("select2-choice select2-default")[1];
-        a1.dispatchEvent(testevent);
-        var a2 = document.querySelector("#select2-drop > div > input")
-                a2.value = "Bachelor's Degree";
-        var testevent2 = new Event("keyup-change");
-        var a3 = document.querySelector("#select2-drop > div > input")
-            a3.dispatchEvent(testevent2);
-         setTimeout(function(){ 
-                     
-                     
-            var ul = document.getElementsByClassName("select2-results");
-
-            const childern = ul[2].childNodes;
-
-            // iterate over all child nodes
-            var testevent4 = new Event("mousedown", {
-                                    bubbles: true,
-                                    cancelable: true,
-                                });
-            childern[0].dispatchEvent(testevent4);
-            
-            var testevent5 = new Event("mouseup", {
-                                    bubbles: true,
-                                    cancelable: true,
-                                });
-            childern[0].dispatchEvent(testevent5);
-            },    
-            3000
-        );
+        selectItem(0);
+        selectItem(1);
+        selectItem(2);
         // var testevent = new Event("mousedown");
         // document.getElementsByClassName("select2-choice select2-default")[0].dispatchEvent(testevent);
         // console.log("success4");
