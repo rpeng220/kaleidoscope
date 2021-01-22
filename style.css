@@ -1,0 +1,77 @@
+#kumquatOverlay {
+    box-sizing: content-box;
+    position: fixed;
+    width: 20% !important;
+    top: 10px !important;
+    left: 75% !important;
+    z-index: 999999999 !important;
+    text-align: center !important;
+    height: 300px !important;
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    background-color: rgb(255, 255, 255, 80%);
+}
+
+#kumquatButton {
+    position: relative !important;
+    width: 70% !important;
+    top: 20% !important;
+    /* right: 50% !important; */
+    padding-left: 0%;
+    z-index: 999999998 !important;
+    text-align: center !important;
+    height: 50px !important;
+    background: rgba(239, 110, 17, 0.93);
+    border-radius: 5px;
+    border: none;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    color: seashell;
+    line-height: 25px;
+    /* identical to box height */
+    text-align: center;
+}
+
+#kumquatButton:hover {
+    color:white;
+    background: rgba(255, 125, 32, 0.93);
+    cursor: pointer;
+}
+
+#popupText {
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 20px;
+    position: relative !important;
+    /* width: 80% !important; */
+    top: 15% !important;
+    z-index: 999999997 !important;
+    text-align: center !important;
+    /* height: 20px !important; */
+}
+
+#popupClose {
+    position: relative !important;
+    /* width: 80% !important; */
+    top: 23% !important;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    z-index: 999999996 !important;
+    text-align: center !important;
+    text-decoration: underline;
+    /* height: 20px !important; */
+}
+
+#popupClose:hover {
+    cursor: pointer;
+    color:darkgray;
+}
+
+#kumquatTree {
+    position: relative !important;
+    top: 8% !important;
+}

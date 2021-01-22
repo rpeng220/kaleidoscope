@@ -26,6 +26,12 @@ var selectevent = new Event('select', {
     cancelable: false,
 })
 
+var testoevent = new Event('focus', {
+    bubbles: true,
+    cancelable: false,
+})
+
+
 // Helper function to handle workday events. Fills out an input field and updates the value with site JS.
 function changevalue(element, stringval) {
     element.value = stringval;
@@ -44,9 +50,11 @@ function trytypexpath(xpath, stringval) {
 // Trytype for Workday apps using querySelector
 function trytypeworkday(query, stringval) {
     if (document.querySelector(query)) {
-        var element = document.querySelector(query);
-        element.value = stringval;
-        element.dispatchEvent(changeevent);
+        var ele = document.querySelector(query);
+        ele.dispatchEvent(testoevent);
+        ele.value = stringval;
+        document.querySelector('[role=main]').dispatchEvent(testoevent)
+        ele.dispatchEvent(changeevent);
     }
 }
 
@@ -146,8 +154,9 @@ function workdayPersonalinfo(nav, form) {
     }
     if (form == "default") { //we don't want to rely on page ordering if we don't have to, so this is the default.
         trytypeworkday('[data-automation-id="legalNameSection_firstName"]', PROFILE.first_name);
+        trytypeworkday('[data-automation-id="legalNameSection_lastName"]', PROFILE.last_name);
         trytypeworkday('[data-automation-id="legalNameSection_primary"]', PROFILE.last_name);
-        trytypeworkday('[data-automation-id="addressSection_addressLine1"]', PROFILE.address);
+        trytypeworkday('[data-automation-id="addressSection_addressLine1"]', PROFILE.street_address);
         trytypeworkday('[data-automation-id="addressSection_city"]', PROFILE.city);
         trytypeworkday('[data-automation-id="addressSection_postalCode"]', PROFILE.zip_code);
         trytypeworkday('[data-automation-id="phone-number"]', PROFILE.phone);
