@@ -109,15 +109,17 @@ function taleoExperience() {
     dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm-dv_cs_experience_EndDate.year', PROFILE.job_end_year1);
     //select dates of employment
     if (PROFILE.employer2 != "") {
-        if (document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-we-wei-1-frm-dv_cs_experience_Employer") == false) {
-            window.onload = window.onload = function() {
+        if (document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-we-wei-1-frm-dv_cs_experience_Employer") == null) {
+            window.onload = function() {
+                console.log("onload")
                 var reloading = sessionStorage.getItem("reloading");
                 if (reloading) {
                     sessionStorage.removeItem("reloading");
                     taleoExperience();
                 }
-                sessionStorage.setItem("reloading", "true");
             }
+            console.log("set reload")
+            sessionStorage.setItem("reloading", "true");
             document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-lblAddWorkExperience').click();
         }
         setTimeout(function() {

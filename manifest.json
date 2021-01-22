@@ -17,7 +17,7 @@
     }
   ],
 
-  "web_accessible_resources": ["index.html", "*.png"],
+  "web_accessible_resources": ["index.html", "*.png", "Roboto-Regular.ttf"],
   
   "manifest_version": 2,
   "icons": { 
