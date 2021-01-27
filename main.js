@@ -125,21 +125,6 @@ function moveclick(query) {
     foundelement.click()
 }
 
-// Waits for element found by xpath to be present before continuing.
-function pollDOM(target, parent, func) {
-    console.log("pollDOM running")
-    var observer = new MutationObserver(function(mutations){
-        if(target) {
-          func();
-          observer.disconnect(); // to stop observing the dom
-        }
-      })
-      observer.observe(parent, { 
-        childList: true,
-        subtree: true // needed if the node you're targeting is not the direct parent
-      });
-}
-
 function waitForElement(selector) {
     return new Promise(function(resolve, reject) {
       var element = document.querySelector(selector);

@@ -96,7 +96,17 @@
     <input type="text" id="uni_city" name="uni_city"><br>
     <label for="gpa">GPA</label><br>
     <input type="text" id="gpa" name="gpa"><br>
-    <label for="major">Major</label><br>
+    <label class="col-md-4 control-label" for="selectbasic">Degree</label>
+    <div class="col-md-4">
+    <select id="selectbasic" name="selectbasic" class="form-control">
+      <option value="High School">High School</option>
+      <option value="Associate">Associate's Degree</option>
+      <option value="Bachelor">Bachelor's Degree</option>
+      <option value="Master">Master's Degree</option>
+      <option value="Ph">PhD</option>
+    </select>
+    </div>
+    <label for="major">Major (case sensitive)</label><br>
     <input type="text" id="major" name="major"><br>
     <label for="uni_start">University Start Date</label><br>
     <input type="month" id="uni_start" name="uni_start"><br>

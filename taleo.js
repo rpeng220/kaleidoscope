@@ -110,14 +110,6 @@ function taleoExperience() {
     //select dates of employment
     if (PROFILE.employer2 != "") {
         if (document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-we-wei-1-frm-dv_cs_experience_Employer") == null) {
-            window.onload = function() {
-                console.log("onload")
-                var reloading = sessionStorage.getItem("reloading");
-                if (reloading) {
-                    sessionStorage.removeItem("reloading");
-                    taleoExperience();
-                }
-            }
             console.log("set reload")
             sessionStorage.setItem("reloading", "true");
             document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-lblAddWorkExperience').click();

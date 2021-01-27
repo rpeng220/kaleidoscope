@@ -26,11 +26,6 @@ var selectevent = new Event('select', {
     cancelable: false,
 })
 
-var testoevent = new Event('focus', {
-    bubbles: true,
-    cancelable: false,
-})
-
 
 // Helper function to handle workday events. Fills out an input field and updates the value with site JS.
 function changevalue(element, stringval) {
@@ -51,9 +46,7 @@ function trytypexpath(xpath, stringval) {
 function trytypeworkday(query, stringval) {
     if (document.querySelector(query)) {
         var ele = document.querySelector(query);
-        ele.dispatchEvent(testoevent);
         ele.value = stringval;
-        document.querySelector('[role=main]').dispatchEvent(testoevent)
         ele.dispatchEvent(changeevent);
     }
 }
@@ -73,6 +66,22 @@ function dropdownSelect(xpath1, xpath2) {
     waitForXPath(xpath2).then(function() {
         document.evaluate(xpath2, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click()
     });
+} 
+
+function setReactInputValue(query, elevalue) {  
+    var ele = document.querySelector(query);
+    if (ele) {
+        ele.value = elevalue;
+        ele.dispatchEvent(new Event('blur'));
+    }
+}
+
+function reactTypeList(xpath, posn, stringval) {
+    var ele = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(posn);
+    if (ele) {
+        ele.value = stringval;
+        ele.dispatchEvent(new Event('blur'));
+    }
 } 
 
 function workdayLogin() {
@@ -147,19 +156,20 @@ function register(version) {
 }
 
 // Having problems with string parsing literal quotations into encapsulated_state
-function workdayPersonalinfo(nav, form) {
+function workdayPersonalinfo(nav, form, clickelement) {
     function clickonstate() {
         var targetstate = document.evaluate('//div[contains(text(), "' + PROFILE.state + '")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         targetstate.click();
     }
     if (form == "default") { //we don't want to rely on page ordering if we don't have to, so this is the default.
-        trytypeworkday('[data-automation-id="legalNameSection_firstName"]', PROFILE.first_name);
-        trytypeworkday('[data-automation-id="legalNameSection_lastName"]', PROFILE.last_name);
-        trytypeworkday('[data-automation-id="legalNameSection_primary"]', PROFILE.last_name);
-        trytypeworkday('[data-automation-id="addressSection_addressLine1"]', PROFILE.street_address);
-        trytypeworkday('[data-automation-id="addressSection_city"]', PROFILE.city);
-        trytypeworkday('[data-automation-id="addressSection_postalCode"]', PROFILE.zip_code);
-        trytypeworkday('[data-automation-id="phone-number"]', PROFILE.phone);
+        // trytypeworkday('[data-automation-id="legalNameSection_firstName"]', PROFILE.first_name);
+        setReactInputValue('[data-automation-id="legalNameSection_firstName"]', PROFILE.first_name);
+        setReactInputValue('[data-automation-id="legalNameSection_lastName"]', PROFILE.last_name);
+        setReactInputValue('[data-automation-id="legalNameSection_primary"]', PROFILE.last_name);
+        setReactInputValue('[data-automation-id="addressSection_addressLine1"]', PROFILE.street_address);
+        setReactInputValue('[data-automation-id="addressSection_city"]', PROFILE.city);
+        setReactInputValue('[data-automation-id="addressSection_postalCode"]', PROFILE.zip_code);
+        setReactInputValue('[data-automation-id="phone-number"]', PROFILE.phone);
         const state = document.evaluate('//label[contains(text(), "State")]//following::button[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         state.click();
         waitForXPath('//div[contains(text(), "California")]').then(clickonstate());
@@ -177,7 +187,20 @@ function workdayPersonalinfo(nav, form) {
         state.click();
         waitForXPath('//div[contains(text(), "' + PROFILE.state + '")]').then(clickonstate());
     }
-    //done, send notification and wait for next page, then call workday func
+    //done, send notification and wait for click
+    function pagechange() {
+        setTimeout(function() {
+            console.log("checking")
+            if (nav == 1) {
+                waitForXPath('//*[@data-automation-id="taskOrchCurrentItemLabel"]').then(createPopup("workday"));
+            } else if (nav == 2) {
+                waitForElement('[class=css-1uso8fp]').then(createPopup("workday"));
+            } else if (nav == 3) {
+                waitForElement('h2').then(createPopup("workday"))
+            }
+        }, 3000);
+    }
+    clickelement.addEventListener("click", pagechange);
     return;
 }
 
@@ -190,75 +213,78 @@ function workdayExperience(nav, form) {
         if (currenttext.includes("Job Title") == false) {
             document.querySelector("[aria-label='Add Work Experience']").click();
         function defaultfunc() {
-            trytypeworkday('[data-automation-id="jobTitle"]', PROFILE.job_title1);
-            trytypeworkday('[data-automation-id="company"]', PROFILE.employer1);
-            trytypeworkday('[data-automation-id="location"]', PROFILE.job_location1);
-            trytypeworkday('[data-automation-id="description"]', PROFILE.job_desc1);
-            trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.job_start_month1 + PROFILE.job_start_year1);
+            setReactInputValue('[data-automation-id="jobTitle"]', PROFILE.job_title1);
+            setReactInputValue('[data-automation-id="company"]', PROFILE.employer1);
+            setReactInputValue('[data-automation-id="location"]', PROFILE.job_location1);
+            setReactInputValue('[data-automation-id="description"]', PROFILE.job_desc1);
+            reactTypeList('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.job_start_month1 + PROFILE.job_start_year1);
             if (PROFILE.current_job1 == 1) {
                 document.querySelector('[data-automation-id="currentlyWorkHere"]').click()
             } else {
-                trytypelist('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month1 + PROFILE.job_end_year1);
+                reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month1 + PROFILE.job_end_year1);
                 datecount += 1;
             }
             if (PROFILE.employer2 != "") {
                 waitForXPath('//*[@aria-label="Add Another Work Experience"]').then(function() {
                     document.querySelector('[aria-label="Add Another Work Experience"]').click()
-                    waitForXPath('(//*[@data-automation-id="jobTitle"])[2]').then(function() {
-                        trytypelist('//*[@data-automation-id="jobTitle"]', 1, PROFILE.job_title2);
-                        trytypelist('//*[@data-automation-id="company"]', 1, PROFILE.employer2);
-                        trytypelist('//*[@data-automation-id="location"]', 1, PROFILE.job_location2);
-                        trytypelist('//*[@data-automation-id="description"]', 1, PROFILE.job_desc2);
-                        trytypelist('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_start_month2 + PROFILE.job_start_year2);
+                    setTimeout(function() {
+                        reactTypeList('//*[@data-automation-id="jobTitle"]', 1, PROFILE.job_title2);
+                        reactTypeList('//*[@data-automation-id="company"]', 1, PROFILE.employer2);
+                        reactTypeList('//*[@data-automation-id="location"]', 1, PROFILE.job_location2);
+                        reactTypeList('//*[@data-automation-id="description"]', 1, PROFILE.job_desc2);
+                        reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_start_month2 + PROFILE.job_start_year2);
                         datecount += 1;
                         if (PROFILE.current_job2 == 1) {
                             document.evaluate('//*[@data-automation-id="currentlyWorkHere"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(1).click();
                         } else {
-                            trytypelist('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month2 + PROFILE.job_end_year2);
+                            reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month2 + PROFILE.job_end_year2);
                             datecount += 1;
                         }
                         if (PROFILE.employer3 != "") {
                             waitForElement('[aria-label="Add Another Work Experience"]').then(function() {
                                 document.querySelector('[aria-label="Add Another Work Experience"]').click()
-                                waitForXPath('(//*[@data-automation-id="jobTitle"])[3]').then(function() {
-                                    trytypelist('//*[@data-automation-id="jobTitle"]', 2, PROFILE.job_title3);
-                                    trytypelist('//*[@data-automation-id="company"]', 2, PROFILE.employer3);
-                                    trytypelist('//*[@data-automation-id="location"]', 2, PROFILE.job_location3);
-                                    trytypelist('//*[@data-automation-id="description"]', 2, PROFILE.job_desc3);
-                                    trytypelist('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_start_month3 + PROFILE.job_start_year3);
+                                setTimeout(function() {
+                                    reactTypeList('//*[@data-automation-id="jobTitle"]', 2, PROFILE.job_title3);
+                                    reactTypeList('//*[@data-automation-id="company"]', 2, PROFILE.employer3);
+                                    reactTypeList('//*[@data-automation-id="location"]', 2, PROFILE.job_location3);
+                                    reactTypeList('//*[@data-automation-id="description"]', 2, PROFILE.job_desc3);
+                                    reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_start_month3 + PROFILE.job_start_year3);
                                     datecount += 1;
                                     if (PROFILE.current_job2 == 1) {
                                         document.evaluate('//*[@data-automation-id="currentlyWorkHere"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(2).click();
                                     } else {
-                                        trytypelist('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month3 + PROFILE.job_end_year3);
+                                        reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month3 + PROFILE.job_end_year3);
                                         datecount += 1;
                                         }
-                                    });
+                                    }, 2000)
                                 });
                             }
-                        });
+                        }, 2000);
                     });
                 }
-                if (currenttext.includes("Degree") || existsquery('[aria-label=Add Education]')) {
+                if (currenttext.includes("Degree") || document.querySelector('[aria-label="Add Education"]')) {
                     edusection = true;
                     if (currenttext.includes("Degree") == false) {
                         document.querySelector("[aria-label='Add Education']").click();
-                        waitForElement("[data-automation-id='school']").then(function() {
-                    changevalue(document.querySelector("[data-automation-id='school']"), PROFILE.university);
-                    changevalue(document.querySelector("[data-automation-id='gpa']"), PROFILE.gpa);
-                    trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.uni_start_year);
-                            trytypelist('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 1, PROFILE.grad_year);
+                        setTimeout(function() {
+                            setReactInputValue("[data-automation-id='school']", PROFILE.university);
+                            setReactInputValue("[data-automation-id='gpa']", PROFILE.gpa);
+                            reactTypeList('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.uni_start_year);
+                            reactTypeList('//*[@data-automation-id="educationSection"]//*[@data-automation-id="dateInputWrapper"]', 1, PROFILE.grad_year);
                             document.querySelector("[data-automation-id='degree']").click();
                             setTimeout(document.evaluate('//div[contains(text(), "Bachelors Degree")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click(), 800);
-                            setTimeout(function() {
-                                document.querySelector('[data-automation-id="multiselectInputContainer"]').click();
-                                setTimeout(function() {
-                                    var major = '[data-automation-label="' + PROFILE.major + '"]';
-                                    changevalue(document.querySelector('[data-automation-id="searchBox"]'), PROFILE.major);
-                                    setTimeout(document.querySelector(major).click(), 600);
-                                    }, 600)
-                                }, 1000)
-                            })
+                            // Degree Input Box
+                            // setTimeout(function() {
+                            //     document.querySelector('[data-automation-id="multiselectInputContainer"]').click();
+                            //     setTimeout(function() {
+                            //         trytypeworkday('[data-automation-id="searchBox"]', PROFILE.major);
+                            //         setTimeout(function() {
+                            //             var major = '[data-automation-label="' + PROFILE.major + '"]';
+                            //             document.querySelector(major).click();
+                            //             }, 600);
+                            //         }, 600)
+                            //     }, 1000)
+                            }, 2000);
                         }
                     }
                 if (existsquery('[aria-label="Add Languages"]') || currenttext.includes('native language')) {
@@ -274,14 +300,17 @@ function workdayExperience(nav, form) {
                             document.querySelector("[data-automation-id='languageProficiency-0']").click();
                             setTimeout(document.evaluate('//div[contains(text(), "Native")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click(), 1500);
                         }, 2000);
-                        setTimeout(document.querySelector('[data-automation-id="nativeLanguage"]').click(), 2300);
+                        setTimeout(function() {
+                            document.querySelector('[data-automation-id="nativeLanguage"]').click() 
+                        }, 2200);
                     }
             //upload resume here
             //click code goes here if the other click doesnt owrk
                 }
             //trytypelist
             }
-        waitForElement('[data-automation-id="jobTitle"]').then(defaultfunc())
+        setTimeout(function() { defaultfunc()}, 2000);
+        // waitForElement('[data-automation-id="jobTitle"]').then(setTimeout(function() { defaultfunc() }, 1000));
         }
     }
     if (form == "custom") {
@@ -382,7 +411,7 @@ function workdayExperience(nav, form) {
     }
 }
 
-function workday(nav, form) {
+function workday(nav, form, clickelement) {
     //wait for DOM pageload to complete
     console.log("dom loaded")
     var currenttext = document.getElementsByTagName("body")[0].innerText;
@@ -426,7 +455,7 @@ function workday(nav, form) {
         //     }
         // }
     if (pagelower.includes("my information")) {
-        return workdayPersonalinfo(nav, form);
+        return workdayPersonalinfo(nav, form, clickelement);
     }
     if (pagelower.includes("my experience")) {
         return workdayExperience(nav, form);
@@ -436,7 +465,7 @@ function workday(nav, form) {
             setTimeout(function() {
                 console.log("checking")
                 if (currentelement) {
-                    return workday(nav, form);
+                    return workday(nav, form, clickelement);
                 }
             }, 7000);
         }

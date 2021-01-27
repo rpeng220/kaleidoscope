@@ -6,6 +6,12 @@
 * Port Lever - DONE
 * Port Workday - done
 * Port Taleo - done
+* Greenhouse debug university function - done
+* Implement background scripts - done
+* Save Profile to background
+* Right click autofill button
+* notification system
+
 
 ### Reminders
 * Ignore resume upload for now - Resume upload has been resolved
