@@ -12,5 +12,6 @@ function lever() {
     document.getElementsByName("urls[LinkedIn]")[0].value = PROFILE.linkedin;
     document.getElementsByName("urls[GitHub]")[0].value = PROFILE.github;
     document.getElementsByName("urls[Portfolio]")[0].value = PROFILE.website;
+    completeNotification();
     // now submit resume
 }

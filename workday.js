@@ -133,6 +133,7 @@ function register(version) {
                 document.querySelector('[data-automation-id=createAccountCheckbox').click();
             }
             document.querySelector('[data-automation-id=click_filter]').click()
+            completeNotification();
         }
         setTimeout(modern, 2000);
     if (version == "archaic") {
@@ -150,6 +151,7 @@ function register(version) {
                 document.querySelector('[data-automation-id=checkboxPanel]').click();
             }
             document.querySelector('[data-automation-id=click_filter]').click();
+            completeNotification();
         }
         setTimeout(archaic, 2000);
     }
@@ -173,6 +175,7 @@ function workdayPersonalinfo(nav, form, clickelement) {
         const state = document.evaluate('//label[contains(text(), "State")]//following::button[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         state.click();
         waitForXPath('//div[contains(text(), "California")]').then(clickonstate());
+        completeNotification();
     }
     if (form == "custom") { 
         trytypexpath('//*[contains(text(), "First Name")]//following::input[1]', PROFILE.first_name);
@@ -186,6 +189,7 @@ function workdayPersonalinfo(nav, form, clickelement) {
         phone.dispatchEvent(changeevent);
         state.click();
         waitForXPath('//div[contains(text(), "' + PROFILE.state + '")]').then(clickonstate());
+        completeNotification();
     }
     //done, send notification and wait for click
     function pagechange() {
@@ -218,7 +222,7 @@ function workdayExperience(nav, form) {
             setReactInputValue('[data-automation-id="location"]', PROFILE.job_location1);
             setReactInputValue('[data-automation-id="description"]', PROFILE.job_desc1);
             reactTypeList('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateInputWrapper"]', 0, PROFILE.job_start_month1 + PROFILE.job_start_year1);
-            if (PROFILE.current_job1 == 1) {
+            if (PROFILE.current_job1 == true) {
                 document.querySelector('[data-automation-id="currentlyWorkHere"]').click()
             } else {
                 reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month1 + PROFILE.job_end_year1);
@@ -234,7 +238,7 @@ function workdayExperience(nav, form) {
                         reactTypeList('//*[@data-automation-id="description"]', 1, PROFILE.job_desc2);
                         reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_start_month2 + PROFILE.job_start_year2);
                         datecount += 1;
-                        if (PROFILE.current_job2 == 1) {
+                        if (PROFILE.current_job2 == true) {
                             document.evaluate('//*[@data-automation-id="currentlyWorkHere"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(1).click();
                         } else {
                             reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month2 + PROFILE.job_end_year2);
@@ -250,7 +254,7 @@ function workdayExperience(nav, form) {
                                     reactTypeList('//*[@data-automation-id="description"]', 2, PROFILE.job_desc3);
                                     reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_start_month3 + PROFILE.job_start_year3);
                                     datecount += 1;
-                                    if (PROFILE.current_job2 == 1) {
+                                    if (PROFILE.current_job2 == true) {
                                         document.evaluate('//*[@data-automation-id="currentlyWorkHere"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(2).click();
                                     } else {
                                         reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month3 + PROFILE.job_end_year3);
@@ -301,8 +305,9 @@ function workdayExperience(nav, form) {
                             setTimeout(document.evaluate('//div[contains(text(), "Native")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click(), 1500);
                         }, 2000);
                         setTimeout(function() {
-                            document.querySelector('[data-automation-id="nativeLanguage"]').click() 
-                        }, 2200);
+                            document.querySelector('[data-automation-id="nativeLanguage"]').click();
+                            completeNotification();
+                        }, 2400);
                     }
             //upload resume here
             //click code goes here if the other click doesnt owrk
@@ -336,7 +341,7 @@ function workdayExperience(nav, form) {
             job1input.dispatchEvent(inputevent2);
             job1input.dispatchEvent(changeevent);
             // trytypexpath('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', PROFILE.job_start_month1 + PROFILE.job_start_year1);
-            if (PROFILE.current_job1 == 1) {
+            if (PROFILE.current_job1 == true) {
                 document.evaluate('(//label[contains(text(), "currently work here")])[1]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
             } else {
                 trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_end_month1 + PROFILE.job_end_year1);
@@ -354,7 +359,7 @@ function workdayExperience(nav, form) {
                         trytypexpath('(//*[contains(text(), "Role Description")])[3]//following::textarea[1]', PROFILE.job_desc2);
                         trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_start_month2 + PROFILE.job_start_year2);
                         datecount += 1;
-                        if (PROFILE.current_job2 == 1) {
+                        if (PROFILE.current_job2 == true) {
                             document.evaluate('(//label[contains(text(), "currently work here")])[2]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
                         } else {
                             trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_end_month2 + PROFILE.job_end_year2);
@@ -367,7 +372,7 @@ function workdayExperience(nav, form) {
                             trytypexpath('(//*[contains(text(), "Role Description")])[last()]//following::textarea[1]', PROFILE.job_desc3);
                             trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_start_month3 + PROFILE.job_start_year3);
                             datecount += 1;
-                            if (PROFILE.current_job2 == 1) {
+                            if (PROFILE.current_job2 == true) {
                                 document.evaluate('(//label[contains(text(), "currently work here")])[3]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
                             } else {
                                 trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_end_month3 + PROFILE.job_end_year3);
@@ -403,6 +408,7 @@ function workdayExperience(nav, form) {
                     // dropdownSelect('//label[contains(text(), "Language")]//following::*[@data-automation-id="selectWidget"][1]', '//*[@data-automation-label="English"]')
                     //need to learn how to close the degree dropdown first
                     document.evaluate('(//label[contains(text(), "native language")])//following::div[@data-automation-id="checkboxPanel"][1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+                    completeNotification();
                 }, 6000)
             }
         //upload resume goes here

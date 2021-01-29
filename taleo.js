@@ -59,12 +59,12 @@ function taleoPersonalinfo() {
     countryselect.value = document.evaluate('//*[@id="et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-0"]//option[contains(text(), "United States")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).value;
     countryselect.dispatchEvent(inputevent2);
     countryselect.dispatchEvent(changeevent);
+    setTimeout(function() { completeNotification();}, 800);
 }
 
 function taleoExperience() {
     taleoflag = true;
     console.log("taleo experience");
-    //could use DOM containstext//input but this messes up if the HR dept changes the names of the fields
     var x = '0';
     var y = '0';
     var z = '0';
@@ -95,12 +95,15 @@ function taleoExperience() {
             z = '1';
         }
     }
+    if (PROFILE.employer2 != "" && document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-we-wei-1-frm-dv_cs_experience_Employer") == null) {
+        alert("Due to page restrictions you may have to click autofill multiple times after each autofill complete notification for your multiple previous work experiences.");
+    }
     document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm-dv_cs_experience_Employer').value = PROFILE.employer1;
     tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm-dv_cs_experience_Responsibility', PROFILE.job_desc1);
     tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm-dv_cs_experience_JobFunction', PROFILE.job_title1);
     tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm-dv_cs_experience_UDFExperience_JobTitleUDF', PROFILE.job_title1);
     tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm-dv_cs_experience_UDFExperience_Title', PROFILE.job_title1);
-    if (PROFILE.current_job1 == 1 && document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm:dv_cs_experience_CurrentEmployer')) {
+    if (PROFILE.current_job1 == true && document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm:dv_cs_experience_CurrentEmployer')) {
         document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm:dv_cs_experience_CurrentEmployer').click();
     }
     dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm-dv_cs_experience_BeginDate.month', PROFILE.job_start_month1 - 1);
@@ -121,7 +124,7 @@ function taleoExperience() {
             tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-1-frm-dv_cs_experience_JobFunction', PROFILE.job_title2);
             tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-1-frm-dv_cs_experience_UDFExperience_JobTitleUDF', PROFILE.job_title2);
             tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-1-frm-dv_cs_experience_UDFExperience_Title', PROFILE.job_title2);
-            if (PROFILE.current_job2 == 1 && document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-1-frm:dv_cs_experience_CurrentEmployer')) {
+            if (PROFILE.current_job2 == true && document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-1-frm:dv_cs_experience_CurrentEmployer')) {
                 document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-1-frm:dv_cs_experience_CurrentEmployer').click();
             }
             dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-1-frm-dv_cs_experience_BeginDate.month', PROFILE.job_start_month2 - 1);
@@ -138,7 +141,7 @@ function taleoExperience() {
             tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-2-frm-dv_cs_experience_JobFunction', PROFILE.job_title3);
             tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-2-frm-dv_cs_experience_UDFExperience_JobTitleUDF', PROFILE.job_title3);
             tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-2-frm-dv_cs_experience_UDFExperience_Title', PROFILE.job_title3);
-            if (PROFILE.current_job3 == 1 && document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-2-frm:dv_cs_experience_CurrentEmployer')) {
+            if (PROFILE.current_job3 == true && document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-2-frm:dv_cs_experience_CurrentEmployer')) {
                 document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-2-frm:dv_cs_experience_CurrentEmployer').click();
             }
             dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-2-frm-dv_cs_experience_BeginDate.month', PROFILE.job_start_month3 - 1);
@@ -164,9 +167,11 @@ function taleoExperience() {
     dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + y + '-csef-efi-0-frm-dv_cs_education_startDate.year', PROFILE.uni_start_year);
     dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + y + '-csef-efi-0-frm-dv_cs_education_graduationDate.month', PROFILE.grad_month - 1);
     dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + y + '-csef-efi-0-frm-dv_cs_education_graduationDate.year', PROFILE.grad_year);
+
     setTimeout(function() {
         taleoflag = false;
-    }, 50000)
+        completeNotification();
+    }, 3000)
 }
 
 function taleo() {

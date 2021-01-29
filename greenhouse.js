@@ -43,6 +43,7 @@ function greenhouse() {
         selectItem("//*[@id='s2id_education_degree_0']//a", PROFILE.degree);
         setTimeout(function() {
             selectItem("//*[@id='s2id_education_discipline_0']//a", PROFILE.major);
+            completeNotification();
         }, 3000);
     }, 1000);
 }

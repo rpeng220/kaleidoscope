@@ -11,7 +11,7 @@ function createPopup(system) {
   kumquatTree.src = chrome.extension.getURL("kumquat_tree.png");
   let popupCTA = document.createElement('DIV');
   popupCTA.id = "popupText";
-  popupCTA.innerHTML = "Autofill Compatible!"
+  popupCTA.innerHTML = "Kumquat Compatible!"
   let buttonText = document.createElement('BUTTON');
   buttonText.id = "kumquatButton";
   buttonText.innerHTML = 'Autofill Application'
@@ -74,3 +74,15 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       console.log(document.location.href);
     }
   })
+
+function completeNotification() {
+  chrome.runtime.sendMessage('', { 
+      type: 'notification',    
+      options: {      
+        title: 'Autofill Complete!',     
+        message: 'Thanks for using Kumquat.',      
+        iconUrl: '/kumquat.png',      
+        type: 'basic'    
+      }  
+  });
+}
