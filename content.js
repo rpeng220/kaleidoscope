@@ -25,20 +25,27 @@ function createPopup(system) {
   popupClose.onclick = function() { overlayDiv.remove(); };
   buttonText.onclick = function() {
     overlayDiv.remove();
-    switch(system) {
-      case "workday":
-        return workday();
-        break;
-      case "taleo":
-        return taleo();
-        break;
-      case "greenhouse":
-        return greenhouse();
-        break;
-      case "lever":
-        return lever();
-        break;
-    } 
+    chrome.storage.local.get('profile', function(result) {
+      if (typeof result.profile == 'undefined') {
+        alert("You must save your Kumquat profile before autofilling.")
+      } else {
+        PROFILE = JSON.parse(result.profile);
+        switch(system) {
+          case "workday":
+          return workday();
+          break;
+        case "taleo":
+          return taleo();
+          break;
+        case "greenhouse":
+          return greenhouse();
+          break;
+        case "lever":
+          return lever();
+          break;
+        }
+      }
+    }) 
   }
 }
 

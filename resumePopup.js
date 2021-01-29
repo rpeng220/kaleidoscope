@@ -60,11 +60,8 @@ var PROFILE = {
 }
 
 window.addEventListener('load', function() {
-  
 
-  var PROFILE2 = {
-      first_name: "cool"
-  }
+  
 
   function saveChanges(resumeValue) {
     
@@ -173,10 +170,10 @@ window.addEventListener('load', function() {
     reader.readAsText(file);
   });
     
-  //     button.addEventListener("click", function() {
-  //       chrome.runtime.sendMessage({MESSEGE_TYPE: RESUME_MES}, function(response) {
-  //       });
-  // }, false);
+      button.addEventListener("click", function() {
+        chrome.runtime.sendMessage({MESSEGE_TYPE: RESUME_MES}, function(response) {
+        });
+  }, false);
 
 
   button.onclick = function() {

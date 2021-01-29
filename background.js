@@ -158,7 +158,7 @@ chrome.runtime.onInstalled.addListener(function() {
         if (changeInfo.status === 'complete' && tab.url !== "undefined" &&
                         tab.url !== "chrome://newtab/")
         {
-            var flag = tab.url.includes("redfin");
+            var flag = tab.url.includes("lever.co") || tab.url.includes("taleo") || tab.url.includes("myworkdayjobs") || tab.url.includes("greenhouse");
             if (flag)
             {
                 sendUrl(tab.url);
