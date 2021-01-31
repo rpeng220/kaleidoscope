@@ -50,26 +50,21 @@ function createPopup(system) {
 }
 
 window.addEventListener('load', function() {
-  console.log(document.readyState);
   isWorkdayload = false;
   var currenturl = window.location.toString();
   if (existsquery("input[id='first_name']")) {
-    console.log("success2");
     createPopup("greenhouse")
     // greenhouse();
   }
   if (window.location.toString().includes("myworkdayjobs")) {
-    console.log("workday detected");
     createPopup("workday");
     // setTimeout(function() {workday()}, 15000);
   }
   if (window.location.toString().includes("taleo") && taleoflag == false) {
-    console.log("taleo detected");
     createPopup("taleo");
     // setTimeout(function() {taleo()}, 8000);
   }
   if (currenturl.includes('lever.co') && currenturl.includes('/apply')) {
-    console.log("lever detected")
     createPopup("lever");
     // setTimeout(function() {lever()}, 5000);
   }
@@ -77,10 +72,21 @@ window.addEventListener('load', function() {
 
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.message === 'TabUpdated') {
-      console.log(document.location.href);
+    if (request.message === 'autofill') {
+      if (existsquery("input[id='first_name']")) {
+        return greenhouse();
+      }
+      if (window.location.toString().includes("myworkdayjobs")) {
+        return workday()
+      }
+      if (window.location.toString().includes("taleo") && taleoflag == false) {
+        return taleo();
+      }
+      if (currenturl.includes('lever.co') && currenturl.includes('/apply')) {
+        return lever();
+      }
     }
-  })
+})
 
 function completeNotification() {
   chrome.runtime.sendMessage('', { 

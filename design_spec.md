@@ -8,9 +8,11 @@
 * Port Taleo - done
 * Greenhouse debug university function - done
 * Implement background scripts - done
-* Save Profile to background
+* Save Profile to background - done
 * Right click autofill button
-* notification system
+* notification system - done
+* Debug registration
+* Closure Compiler - first, set manifest to resumepopup, config, content, and background.js, then delete boris kwang :(, then ur done
 
 
 ### Reminders

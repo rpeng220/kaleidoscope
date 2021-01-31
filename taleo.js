@@ -38,6 +38,18 @@ function taleoLogin() {
     }, 2000);
 }
 
+function taleoRegister() {
+    waitForElement("[id=dialogTemplate-dialogForm-userName]").then(function() {
+        document.getElementById("dialogTemplate-dialogForm-userName").value = PROFILE.username;
+        document.getElementById("dialogTemplate-dialogForm-password").value = PROFILE.password;
+        if (document.getElementById('dialogTemplate-dialogForm-passwordConfirm')) {
+            document.getElementById('dialogTemplate-dialogForm-passwordConfirm').value = PROFILE.password;
+        }
+        document.getElementById('dialogTemplate-dialogForm-email').value = PROFILE.email;
+        setTimeout(function() { document.getElementById('dialogTemplate-dialogForm-defaultCmd').click();}, 1000);
+    });
+}
+
 function taleoPersonalinfo() {
     document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_FirstName").value = PROFILE.first_name;
     document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_LastName").value = PROFILE.last_name;
@@ -54,17 +66,23 @@ function taleoPersonalinfo() {
     } else if (cellphone) {
         cellphone.value = PROFILE.phone;
     }
-    //select country > state
     var countryselect = document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-0");
     countryselect.value = document.evaluate('//*[@id="et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-0"]//option[contains(text(), "United States")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).value;
     countryselect.dispatchEvent(inputevent2);
     countryselect.dispatchEvent(changeevent);
-    setTimeout(function() { completeNotification();}, 800);
+    setTimeout(function() { 
+        var stateselect = document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-1");
+        stateselect.value = document.evaluate('//*[@id="et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-1"]//option[contains(text(), "' + PROFILE.state + '")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).value;
+        stateselect.dispatchEvent(inputevent2);
+        stateselect.dispatchEvent(changeevent);
+        setTimeout(function() {
+            completeNotification();
+        }, 1500)
+    }, 800);
 }
 
 function taleoExperience() {
     taleoflag = true;
-    console.log("taleo experience");
     var x = '0';
     var y = '0';
     var z = '0';
@@ -110,15 +128,12 @@ function taleoExperience() {
     dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm-dv_cs_experience_BeginDate.year', PROFILE.job_start_year1);
     dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm-dv_cs_experience_EndDate.month', PROFILE.job_end_month1 - 1);
     dateselect('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-0-frm-dv_cs_experience_EndDate.year', PROFILE.job_end_year1);
-    //select dates of employment
     if (PROFILE.employer2 != "") {
         if (document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-we-wei-1-frm-dv_cs_experience_Employer") == null) {
-            console.log("set reload")
             sessionStorage.setItem("reloading", "true");
             document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-lblAddWorkExperience').click();
         }
         setTimeout(function() {
-            console.log('trying!');
             document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-we-wei-1-frm-dv_cs_experience_Employer").value = PROFILE.employer2;
             tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-1-frm-dv_cs_experience_Responsibility', PROFILE.job_desc2);
             tryvalue('et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-we-wei-1-frm-dv_cs_experience_JobFunction', PROFILE.job_title2);
@@ -178,6 +193,9 @@ function taleo() {
     if (document.getElementById("dialogTemplate-dialogForm-login-password")) {
         return taleoLogin();
     }
+    if (existsxpath('//*[contains(text(), "New User Registration")]')) {
+        return taleoRegister();
+    }
     if (document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_FirstName')) {
         return taleoPersonalinfo();
     }
@@ -191,15 +209,6 @@ function taleo() {
         if (document.getElementById("editTemplateMultipart-editForm-content-ftf-saveContinueCmdBottom")) {
             clickelement = document.getElementById("editTemplateMultipart-editForm-content-ftf-saveContinueCmdBottom");
         }
-        // function pagechange() {
-        //     setTimeout(function() {
-        //         console.log("checking")
-        //         return taleo();
-        //     }, 7000);
-        // }
-        // clickelement.addEventListener("click", pagechange);
         return;
     }    
-    //click detect not needed
-
 }
