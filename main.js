@@ -44,7 +44,7 @@ function existsquery(query) {
 
 function existsxpath(xpath) {
     var element = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-    if (element.length > 0) {
+    if (element.snapshotLength > 0) {
         return true;
     }
 }

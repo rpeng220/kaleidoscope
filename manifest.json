@@ -1,8 +1,8 @@
 {
   "name": "Kumquat",
-  "version": "1.0",
-  "description": "auto apply2",
-  "permissions": ["contextMenus", "tabs",  "notifications", "storage", "http://*/*", "https://*/*"],
+  "version": "0.1",
+  "description": "Autofill job applications with one click",
+  "permissions": ["contextMenus", "tabs",  "notifications", "storage", "https://*.myworkdayjobs.com/*", "https://boards.greenhouse.io/*", "https://jobs.lever.co/*", "https://*.taleo.net/*"],
   "background": {
     "scripts": ["background.js", "config.js"],
     "persistent": false

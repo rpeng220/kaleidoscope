@@ -100,45 +100,46 @@ function workdayLogin() {
     setTimeout(function() {
         document.querySelector('div[data-automation-id=click_filter]').click();
         // moveclick('div[data-automation-id=click_filter]');
-        console.log("ok rammus")
     }, 1000);
-    setTimeout(function() {
-        var currenttext = document.getElementsByTagName("body")[0].innerText;
-        if (currenttext.includes("ERROR: Invalid Username/Password")) {
-            register(version);
-        }
-    }, 2000);
+    // setTimeout(function() {
+    //     var currenttext = document.getElementsByTagName("body")[0].innerText;
+    //     if (currenttext.includes("ERROR: Invalid Username/Password")) {
+    //         register(version);
+    //     } else {
+    //         completeNotification();
+    //     }
+    // }, 2000);
     return
 }
 
-function register(version) {
-    if (version == "modern") {
-        document.querySelector("[data-automation-id=createAccountLink]").click();
-        } 
-        function modern() {
-            if (existsquery('[data-automation-id=email')) {
-                changevalue(document.querySelector('[data-automation-id=email'), PROFILE.email)
-            }
-            if (existsquery('[data-automation-id=userName')) {
-                changevalue(document.querySelector('[data-automation-id=userName'), PROFILE.email)
-            }
-            changevalue(document.querySelector('[data-automation-id=password'), PROFILE.password)
-            if (existsquery('[data-automation-id=verifyPassword]')) {
-                changevalue(document.querySelector('[data-automation-id=verifyPassword]'), PROFILE.password)
-            }
-            if (existsquery('[data-automation-id=confirmPassword]')) {
-                changevalue(document.querySelector('[data-automation-id=confirmPassword]'), PROFILE.password)
-            }
-            if (existsquery('[data-automation-id=createAccountCheckbox]')) {
-                document.querySelector('[data-automation-id=createAccountCheckbox').click();
-            }
-            document.querySelector('[data-automation-id=click_filter]').click()
-            completeNotification();
+function workdayRegister() {
+    var version = "none"
+    if (existsquery("input[data-automation-id=email]")) {
+        version = "modern";
+    } else {
+        version = "archaic"
+    }
+    if (version == "modern") { 
+        if (existsquery('[data-automation-id=email')) {
+            changevalue(document.querySelector('[data-automation-id=email'), PROFILE.email)
         }
-        setTimeout(modern, 2000);
+        if (existsquery('[data-automation-id=userName')) {
+            changevalue(document.querySelector('[data-automation-id=userName'), PROFILE.email)
+        }
+        changevalue(document.querySelector('[data-automation-id=password'), PROFILE.password)
+        if (existsquery('[data-automation-id=verifyPassword]')) {
+            changevalue(document.querySelector('[data-automation-id=verifyPassword]'), PROFILE.password)
+        }
+        if (existsquery('[data-automation-id=confirmPassword]')) {
+            changevalue(document.querySelector('[data-automation-id=confirmPassword]'), PROFILE.password)
+        }
+        if (existsquery('[data-automation-id=createAccountCheckbox]')) {
+            document.querySelector('[data-automation-id=createAccountCheckbox').click();
+        }
+        document.querySelector('[data-automation-id=click_filter]').click()
+        completeNotification();
+    }
     if (version == "archaic") {
-        const accountclick = document.evaluate('//*[(text()="Create Account")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
-        accountclick.click();
         function archaic() {
             if (existsquery('[aria-label=Email Address')) {
                 changevalue(document.querySelector('[aria-label=Email Address'), PROFILE.email);
@@ -153,8 +154,9 @@ function register(version) {
             document.querySelector('[data-automation-id=click_filter]').click();
             completeNotification();
         }
-        setTimeout(archaic, 2000);
+        setTimeout(archaic, 300);
     }
+    return;
 }
 
 // Having problems with string parsing literal quotations into encapsulated_state
@@ -194,7 +196,6 @@ function workdayPersonalinfo(nav, form, clickelement) {
     //done, send notification and wait for click
     function pagechange() {
         setTimeout(function() {
-            console.log("checking")
             if (nav == 1) {
                 waitForXPath('//*[@data-automation-id="taskOrchCurrentItemLabel"]').then(createPopup("workday"));
             } else if (nav == 2) {
@@ -354,7 +355,6 @@ function workdayExperience(nav, form) {
                     setTimeout(function() {
                         trytypexpath('(//*[contains(text(), "Job Title")])[3]//following::input[1]', PROFILE.job_title2);
                         trytypexpath('(//*[contains(text(), "Location")])[3]//following::input[1]', PROFILE.job_location2);
-                        console.log("employer2")
                         trytypexpath('(//*[contains(text(), "Company")])[3]//following::input[1]', PROFILE.employer2);
                         trytypexpath('(//*[contains(text(), "Role Description")])[3]//following::textarea[1]', PROFILE.job_desc2);
                         trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_start_month2 + PROFILE.job_start_year2);
@@ -419,11 +419,12 @@ function workdayExperience(nav, form) {
 
 function workday(nav, form, clickelement) {
     //wait for DOM pageload to complete
-    console.log("dom loaded")
     var currenttext = document.getElementsByTagName("body")[0].innerText;
     var lowertext = currenttext.toLowerCase();
+    if (existsxpath('//button[contains(text(), "Create Account")]')) {
+        return workdayRegister();
+    }
     if (lowertext.includes('sign in')) {
-        console.log("logging in");
         return workdayLogin();
     }
     var currentpage = "none";
@@ -466,10 +467,8 @@ function workday(nav, form, clickelement) {
     if (pagelower.includes("my experience")) {
         return workdayExperience(nav, form);
     } else {
-        console.log("creating observer");
         function pagechange() {
             setTimeout(function() {
-                console.log("checking")
                 if (currentelement) {
                     return workday(nav, form, clickelement);
                 }
