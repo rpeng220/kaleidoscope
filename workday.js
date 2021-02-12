@@ -86,19 +86,19 @@ function reactTypeList(xpath, posn, stringval) {
 
 function workdayLogin() {
     var version = "none"
-    var emailfield = document.querySelector("input[data-automation-id=email]");
-    var passwordfield = document.querySelector("input[data-automation-id=password]"); 
+    var emailfield = document.querySelector("input[data-automation-id='email']");
+    var passwordfield = document.querySelector("input[data-automation-id='password']"); 
     if (existsquery("input[data-automation-id=email]")) {
         version = "modern";
     } else {
-        emailfield = document.querySelector("input[aria-label=Email Address]");
-        passwordfield = document.querySelector("input[aria-label=Password]");
+        emailfield = document.querySelector("input[aria-label='Email Address']");
+        passwordfield = document.querySelector("input[aria-label='Password']");
         version = "archaic"
     }
     changevalue(emailfield, PROFILE.email);
     changevalue(passwordfield, PROFILE.password);
     setTimeout(function() {
-        document.querySelector('div[data-automation-id=click_filter]').click();
+        document.querySelector('div[data-automation-id="click_filter"]').click();
         // moveclick('div[data-automation-id=click_filter]');
     }, 1000);
     // setTimeout(function() {
@@ -114,44 +114,44 @@ function workdayLogin() {
 
 function workdayRegister() {
     var version = "none"
-    if (existsquery("input[data-automation-id=email]")) {
+    if (existsquery("input[data-automation-id='email']")) {
         version = "modern";
     } else {
         version = "archaic"
     }
     if (version == "modern") { 
         if (existsquery('[data-automation-id=email')) {
-            changevalue(document.querySelector('[data-automation-id=email'), PROFILE.email)
+            changevalue(document.querySelector('[data-automation-id="email"]'), PROFILE.email)
         }
-        if (existsquery('[data-automation-id=userName')) {
-            changevalue(document.querySelector('[data-automation-id=userName'), PROFILE.email)
+        if (existsquery('[data-automation-id="userName"]')) {
+            changevalue(document.querySelector('[data-automation-id="userName"]'), PROFILE.email)
         }
-        changevalue(document.querySelector('[data-automation-id=password'), PROFILE.password)
+        changevalue(document.querySelector('[data-automation-id="password"]'), PROFILE.password)
         if (existsquery('[data-automation-id=verifyPassword]')) {
-            changevalue(document.querySelector('[data-automation-id=verifyPassword]'), PROFILE.password)
+            changevalue(document.querySelector('[data-automation-id="verifyPassword"]'), PROFILE.password)
         }
-        if (existsquery('[data-automation-id=confirmPassword]')) {
-            changevalue(document.querySelector('[data-automation-id=confirmPassword]'), PROFILE.password)
+        if (existsquery('[data-automation-id="confirmPassword"]')) {
+            changevalue(document.querySelector('[data-automation-id="confirmPassword"]'), PROFILE.password)
         }
-        if (existsquery('[data-automation-id=createAccountCheckbox]')) {
-            document.querySelector('[data-automation-id=createAccountCheckbox').click();
+        if (existsquery('[data-automation-id="createAccountCheckbox"]')) {
+            document.querySelector('[data-automation-id="createAccountCheckbox"]').click();
         }
-        document.querySelector('[data-automation-id=click_filter]').click()
+        document.querySelector('[data-automation-id="click_filter"]').click()
         completeNotification();
     }
     if (version == "archaic") {
         function archaic() {
-            if (existsquery('[aria-label=Email Address')) {
-                changevalue(document.querySelector('[aria-label=Email Address'), PROFILE.email);
+            if (existsquery('[aria-label="Email Address"]')) {
+                changevalue(document.querySelector('[aria-label="Email Address"]'), PROFILE.email);
             }
-            changevalue(document.querySelector('[aria-label=Password'), PROFILE.password);
-            if (existsquery('[aria-label=Verify New Password]')) {
-                changevalue(document.querySelector('[aria-label=Verify New Password]'), PROFILE.password);
+            changevalue(document.querySelector('[aria-label="Password"]'), PROFILE.password);
+            if (existsquery('[aria-label="Verify New Password"]')) {
+                changevalue(document.querySelector('[aria-label="Verify New Password"]'), PROFILE.password);
             }
-            if (existsquery('[data-automation-id=checkboxPanel]')) {
-                document.querySelector('[data-automation-id=checkboxPanel]').click();
+            if (existsquery('[data-automation-id="checkboxPanel"]')) {
+                document.querySelector('[data-automation-id="checkboxPanel"]').click();
             }
-            document.querySelector('[data-automation-id=click_filter]').click();
+            document.querySelector('[data-automation-id="click_filter"]').click();
             completeNotification();
         }
         setTimeout(archaic, 300);
