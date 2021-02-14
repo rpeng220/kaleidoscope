@@ -73,6 +73,7 @@ window.addEventListener('load', function() {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === 'autofill') {
+      console.log("works")
       if (existsquery("input[id='first_name']")) {
         return greenhouse();
       }
@@ -94,7 +95,7 @@ function completeNotification() {
       options: {      
         title: 'Autofill Complete!',     
         message: 'Thanks for using Kumquat.',      
-        iconUrl: '/kumquat.png',      
+        iconUrl: '/kumquat48.png',      
         type: 'basic'    
       }  
   });

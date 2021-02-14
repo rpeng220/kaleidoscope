@@ -39,7 +39,7 @@ function taleoLogin() {
 }
 
 function taleoRegister() {
-    waitForElement("[id=dialogTemplate-dialogForm-userName]").then(function() {
+    waitForElement("[id='dialogTemplate-dialogForm-userName']").then(function() {
         document.getElementById("dialogTemplate-dialogForm-userName").value = PROFILE.username;
         document.getElementById("dialogTemplate-dialogForm-password").value = PROFILE.password;
         if (document.getElementById('dialogTemplate-dialogForm-passwordConfirm')) {
@@ -47,6 +47,13 @@ function taleoRegister() {
         }
         document.getElementById('dialogTemplate-dialogForm-email').value = PROFILE.email;
         setTimeout(function() { document.getElementById('dialogTemplate-dialogForm-defaultCmd').click();}, 1000);
+    });
+}
+
+function taleoSecurity() {
+    waitForElement("[id='dialogTemplate-dialogForm-j_id_id18pc6-0-question']").then(function() {
+        document.getElementById('dialogTemplate-dialogForm-j_id_id18pc6-0-question').value = PROFILE.question;
+        document.getElementById('dialogTemplate-dialogForm-j_id_id18pc6-0-answer').value = PROFILE.answer;
     });
 }
 
@@ -196,10 +203,13 @@ function taleo() {
     if (existsxpath('//*[contains(text(), "New User Registration")]')) {
         return taleoRegister();
     }
+    if (existsxpath('//*[contains(text(), "Security Question")]')) {
+        return taleoSecurity();
+    }
     if (document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_FirstName')) {
         return taleoPersonalinfo();
     }
-    if (document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_0-we-wei-0-frm-dv_cs_experience_Employer') || 'et-ef-content-ftf-gp-j_id_id16pc9-page_1-we-wei-0-frm-dv_cs_experience_Employer' || 'et-ef-content-ftf-gp-j_id_id16pc9-page_2-we-wei-0-frm-dv_cs_experience_Employer') {
+    if (document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_0-we-wei-0-frm-dv_cs_experience_Employer') || document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_1-we-wei-0-frm-dv_cs_experience_Employer') || document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_2-we-wei-0-frm-dv_cs_experience_Employer')) {
         return taleoExperience();
     } else {
         var clickelement;

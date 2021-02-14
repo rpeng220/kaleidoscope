@@ -13,11 +13,11 @@
       "matches": ["https://*.myworkdayjobs.com/*", "https://boards.greenhouse.io/*", "https://jobs.lever.co/*", "https://*.taleo.net/*"],
       "run_at": "document_end",
       "css": ["style.css"],
-      "js": ["content.js", "config.js", "main.js", "workday.js", "greenhouse.js", "taleo.js", "lever.js", "resumePopup.js"]
+      "js": ["content.js", "config.js", "main.js", "workday.js", "greenhouse.js", "taleo.js", "lever.js", "resumePopup.js", "popup.js"]
     }
   ],
 
-  "web_accessible_resources": ["index.html", "*.png", "Roboto-Regular.ttf"],
+  "web_accessible_resources": ["popup.html", "index.html", "*.png", "Roboto-Regular.ttf"],
   
   "manifest_version": 2,
   "icons": { 
@@ -27,6 +27,7 @@
   },
   "browser_action": {
       "default_icon": "kumquat16.png",
-      "default_popup": "index.html"
-  }
+      "default_popup": "popup.html"
+  },
+  "options_page": "index.html"
 }

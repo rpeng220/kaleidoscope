@@ -48,13 +48,14 @@ function sendApplication() {
 chrome.runtime.onInstalled.addListener(function() {
   chrome.contextMenus.create({"title": "Kumquat", "id": "parent"});
   chrome.contextMenus.create(
-      {"title": "Autofill", "parentId": "parent", "id": "Profile", });
+      {"title": "Profile", "parentId": "parent", "id": "Profile", });
+//   chrome.contextMenus.create({"title": "Autofill", "parentId": "parent", "id": "Autofill"});
   
-  // chrome.contextMenus.onClicked.addListener(function(info, tab) {
-  //   if (info.menuItemID == "Autofill") {
-  //     chrome.tabs.sendMessage({message: 'autofill'});
-  //   }
-  // });
+// chrome.contextMenus.onClicked.addListener(function(info, tab) {
+//     if (info.menuItemID == "Autofill") {
+//       chrome.tabs.sendMessage({message: 'autofill'});
+//     }
+// });
   
   
   generateUserId();
