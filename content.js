@@ -71,24 +71,6 @@ window.addEventListener('load', function() {
 });
 
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.message === 'autofill') {
-      console.log("works")
-      if (existsquery("input[id='first_name']")) {
-        return greenhouse();
-      }
-      if (window.location.toString().includes("myworkdayjobs")) {
-        return workday()
-      }
-      if (window.location.toString().includes("taleo") && taleoflag == false) {
-        return taleo();
-      }
-      if (currenturl.includes('lever.co') && currenturl.includes('/apply')) {
-        return lever();
-      }
-    }
-})
-
 function completeNotification() {
   chrome.runtime.sendMessage('', { 
       type: 'notification',    

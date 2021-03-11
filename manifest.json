@@ -1,6 +1,6 @@
 {
   "name": "Kumquat",
-  "version": "0.2",
+  "version": "0.3",
   "description": "Autofill job applications with one click",
   "permissions": ["contextMenus", "tabs",  "notifications", "storage"],
   "background": {
@@ -16,6 +16,8 @@
       "js": ["content.js", "config.js", "main.js", "workday.js", "greenhouse.js", "taleo.js", "lever.js", "resumePopup.js", "popup.js"]
     }
   ],
+
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
 
   "web_accessible_resources": ["popup.html", "index.html", "*.png", "Roboto-Regular.ttf"],
   

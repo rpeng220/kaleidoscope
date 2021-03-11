@@ -58,33 +58,40 @@ function taleoSecurity() {
 }
 
 function taleoPersonalinfo() {
-    document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_FirstName").value = PROFILE.first_name;
-    document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_LastName").value = PROFILE.last_name;
-    document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_Address").value = PROFILE.street_address;
-    document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_City").value = PROFILE.city;
-    document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ZipCode").value = PROFILE.zip_code;
-    var cellphone = document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_MobilePhone");
-    var homephone = document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_HomePhone");
-    if (document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_PreferredPhone")) {
-        document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_PreferredPhone").value = 1;
+    var x = 0;
+    if (document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_1-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_FirstName")) {
+        x = 1;
+    }
+    if (document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_2-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_FirstName")) {
+        x = 2;
+    }
+    document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_FirstName").value = PROFILE.first_name;
+    document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_LastName").value = PROFILE.last_name;
+    document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_Address").value = PROFILE.street_address;
+    document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_City").value = PROFILE.city;
+    document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ZipCode").value = PROFILE.zip_code;
+    var cellphone = document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_MobilePhone");
+    var homephone = document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_HomePhone");
+    if (document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_PreferredPhone")) {
+        document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_PreferredPhone").value = 1;
     }
     if (homephone) {
         homephone.value = PROFILE.phone;
     } else if (cellphone) {
         cellphone.value = PROFILE.phone;
     }
-    var countryselect = document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-0");
-    countryselect.value = document.evaluate('//*[@id="et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-0"]//option[contains(text(), "United States")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).value;
+    var countryselect = document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-0");
+    countryselect.value = document.evaluate('//*[@id="et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-0"]//option[contains(text(), "United States")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).value;
     countryselect.dispatchEvent(inputevent2);
     countryselect.dispatchEvent(changeevent);
     setTimeout(function() { 
-        var stateselect = document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-1");
-        stateselect.value = document.evaluate('//*[@id="et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-1"]//option[contains(text(), "' + PROFILE.state + '")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).value;
+        var stateselect = document.getElementById("et-ef-content-ftf-gp-j_id_id16pc9-page_" + x + "-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-1");
+        stateselect.value = document.evaluate('//*[@id="et-ef-content-ftf-gp-j_id_id16pc9-page_' + x + '-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_ResidenceLocation-1"]//option[contains(text(), "' + PROFILE.state + '")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).value;
         stateselect.dispatchEvent(inputevent2);
         stateselect.dispatchEvent(changeevent);
         setTimeout(function() {
             completeNotification();
-        }, 1500)
+        }, 1900)
     }, 800);
 }
 
@@ -206,7 +213,7 @@ function taleo() {
     if (existsxpath('//*[contains(text(), "Security Question")]')) {
         return taleoSecurity();
     }
-    if (document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_FirstName')) {
+    if (document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_0-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_FirstName') || document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_1-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_FirstName') || document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_2-cpi-cfrmsub-frm-dv_cs_candidate_personal_info_FirstName') ) {
         return taleoPersonalinfo();
     }
     if (document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_0-we-wei-0-frm-dv_cs_experience_Employer') || document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_1-we-wei-0-frm-dv_cs_experience_Employer') || document.getElementById('et-ef-content-ftf-gp-j_id_id16pc9-page_2-we-wei-0-frm-dv_cs_experience_Employer')) {

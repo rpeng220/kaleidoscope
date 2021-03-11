@@ -434,7 +434,7 @@ function workday(nav, form, clickelement) {
         currentelement = document.evaluate('//*[@data-automation-id="taskOrchCurrentItemLabel"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
         currentpage = document.evaluate('//*[@data-automation-id="taskOrchCurrentItemLabel"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).innerText;
     }
-    if (existsclass('css-1uso8fp')) {
+    else if (existsclass('css-1uso8fp')) {
         nav = 2;
         currentelement = document.getElementsByClassName('css-1uso8fp')[0];
         currentpage = document.getElementsByClassName('css-1uso8fp')[0].innerText;
