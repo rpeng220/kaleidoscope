@@ -496,7 +496,6 @@ window.addEventListener('load', function() {
         document.getElementById('successMessage').style.visibility = "visible";
         chrome.storage.local.get('profile', function(result) {
           PROFILE = JSON.parse(result.profile);
-          console.log(PROFILE.employer2)
         })
       });
       

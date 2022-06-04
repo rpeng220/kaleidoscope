@@ -255,7 +255,7 @@ function workdayExperience(nav, form) {
                                     reactTypeList('//*[@data-automation-id="description"]', 2, PROFILE.job_desc3);
                                     reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_start_month3 + PROFILE.job_start_year3);
                                     datecount += 1;
-                                    if (PROFILE.current_job2 == true) {
+                                    if (PROFILE.current_job3 == true) {
                                         document.evaluate('//*[@data-automation-id="currentlyWorkHere"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(2).click();
                                     } else {
                                         reactTypeList('//*[@data-automation-id="dateInputWrapper"]', datecount, PROFILE.job_end_month3 + PROFILE.job_end_year3);
@@ -365,20 +365,23 @@ function workdayExperience(nav, form) {
                             trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_end_month2 + PROFILE.job_end_year2);
                             datecount += 1;
                         }
-                        setTimeout(function() {
-                            trytypexpath('(//*[contains(text(), "Job Title")])[last()]//following::input[1]', PROFILE.job_title3);
-                            trytypexpath('(//*[contains(text(), "Company")])[last()]//following::input[1]', PROFILE.employer3);
-                            trytypexpath('(//*[contains(text(), "Location")])[last()]//following::input[1]', PROFILE.job_location3);
-                            trytypexpath('(//*[contains(text(), "Role Description")])[last()]//following::textarea[1]', PROFILE.job_desc3);
-                            trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_start_month3 + PROFILE.job_start_year3);
-                            datecount += 1;
-                            if (PROFILE.current_job2 == true) {
-                                document.evaluate('(//label[contains(text(), "currently work here")])[3]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
-                            } else {
-                                trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_end_month3 + PROFILE.job_end_year3);
+                        waitForXPath('//*[contains(text(), "Work Experience")]//following::button[3]').then(function() {
+                            document.evaluate('//*[contains(text(), "Work Experience")]//following::button[3]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+                            setTimeout(function() {
+                                trytypexpath('(//*[contains(text(), "Job Title")])[last()]//following::input[1]', PROFILE.job_title3);
+                                trytypexpath('(//*[contains(text(), "Company")])[last()]//following::input[1]', PROFILE.employer3);
+                                trytypexpath('(//*[contains(text(), "Location")])[last()]//following::input[1]', PROFILE.job_location3);
+                                trytypexpath('(//*[contains(text(), "Role Description")])[last()]//following::textarea[1]', PROFILE.job_desc3);
+                                trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_start_month3 + PROFILE.job_start_year3);
                                 datecount += 1;
-                            }
-                        }, 500)
+                                if (PROFILE.current_job3 == true) {
+                                    document.evaluate('(//label[contains(text(), "currently work here")])[3]//following::input[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();
+                                } else {
+                                    trytypelist('//*[contains(text(), "Work Experience")]//following::*[@data-automation-id="dateWidgetInputBox"]', datecount, PROFILE.job_end_month3 + PROFILE.job_end_year3);
+                                    datecount += 1;
+                                }
+                            }, 800)
+                        });
                     }, 1000)
 
                 }, 2000);

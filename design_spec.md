@@ -2,8 +2,11 @@
 
 ## Version 0.4
 * Fixed bug in form incorrectly saving university and university city
-* Added form persistence to profile. Now you can see what you previously saved in your profile! (minus password)
-* Todo: Taleo form order
+* Added form persistence to profile. Now you can see what you previously saved in your profile!
+* Fixed Taleo page detection bug
+* Added an autofill button to the extension popup. No more refreshing pages to autofill!
+* Fixed Workday 3rd work experience bug on certain workday application systems
+
 
 ### To do:
 * Create main function - done

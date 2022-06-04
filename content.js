@@ -70,6 +70,31 @@ window.addEventListener('load', function() {
   }
 });
 
+// Autofill activated manually via popup
+chrome.runtime.onMessage.addListener(function(request, sender) {
+    isWorkdayload = false;
+    var currenturl = window.location.toString();
+    chrome.storage.local.get('profile', function(result) {
+      if (typeof result.profile == 'undefined') {
+        alert("You must save your Kumquat profile before autofilling.")
+      } else {
+        PROFILE = JSON.parse(result.profile)
+        if (existsquery("input[id='first_name']")) {
+          greenhouse();
+        }
+        if (window.location.toString().includes("myworkdayjobs")) {
+          workday()
+        }
+        if (window.location.toString().includes("taleo") && taleoflag == false) {
+          taleo()
+        }
+        if (currenturl.includes('lever.co') && currenturl.includes('/apply')) {
+          lever()
+        }
+      }
+    });
+ });
+
 
 function completeNotification() {
   chrome.runtime.sendMessage('', { 
