@@ -4,8 +4,7 @@
   "description": "Autofill job applications with one click",
   "permissions": ["contextMenus", "tabs",  "notifications", "storage"],
   "background": {
-    "service_worker": ["background.js", "config.js"],
-    "persistent": false
+    "service_worker": ["background.js", "config.js"]
   },
   
   "content_scripts": [
