@@ -1,0 +1,52 @@
+.body{
+    font-family: "Source Sans Pro", Helvetica, sans-serif;
+    font-style: normal;
+    background-image: linear-gradient(45deg, #FC9842 25%, #5f77fd 75%);
+    -webkit-text-size-adjust:auto;
+}
+.form-horizontal{
+    margin-left: 30px;
+    display:flex;
+    align-items: flex-start;
+}
+
+.form-control{
+    margin:10px;
+}
+
+#successMessage{
+    visibility:hidden;
+}
+
+label{
+    margin:5px;
+}
+
+fieldset, textarea{
+    width: 370px;
+}
+
+textarea{
+    height:150px;
+}
+
+input{
+    margin:10px;
+    width: 350px;
+}
+#current_job1, #current_job2, #current_job3{
+    width:auto;
+}
+
+p{
+    font-size: 20;
+    margin-left: 15px;;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+button {
+    height: 30px;
+    width: 100px;
+    outline: none;
+  }

@@ -1,39 +1,34 @@
 <html lang = "en-US">
   <title>Kumquat Profile</title>
   <head>
-    <style>
-      button {
-        height: 30px;
-        width: 100px;
-        outline: none;
-      }
-    </style>
+    <link rel = "stylesheet" href="configStyle.css">
+
     <script src="config.js"></script>
     <script src="resumePopup.js"></script>
   </head>
-  <body>
+  <body class="body">
   <h3>&nbsp;Edit Profile</h3>
   <form name="profile" id="profile" class="form-horizontal">
     <fieldset>
-    <label for="fname">First Name</label><br>
+    <label for="fname" class = "fname">First Name:</label><br>
     <input type="text" id="fname" name="fname" value=""><br>
-    <label for="lname">Last Name</label><br>
+    <label for="lname">Last Name:</label><br>
     <input type="text" id="lname" name="lname" value=""><br>
-    <label for="email">Email</label><br>
+    <label for="email">Email:</label><br>
     <input type="text" id="email" name="email" value=""><br>
-    <label for="phone">Phone</label><br>
+    <label for="phone">Phone:</label><br>
     <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value=""><br>
-    <label for="linkedin">LinkedIn</label><br>
+    <label for="linkedin">LinkedIn:</label><br>
     <input type="url" id="linkedin" name="linkedin" value=""><br>
-    <label for="website">Website</label><br>
+    <label for="website">Website:</label><br>
     <input type="url" id="website" name="website" value=""><br>
-    <label for="github">Github</label><br>
+    <label for="github">Github:</label><br>
     <input type="url" id="github" name="github" value=""><br>
-    <label for="street_address">Street Address</label><br>
+    <label for="street_address">Street Address:</label><br>
     <input type="text" id="street_address" name="street_address" value=""><br>
-    <label for="city">City</label><br>
+    <label for="city">City:</label><br>
     <input type="text" id="city" name="city" value=""><br>
-    <label class="col-md-4 control-label" for="selectstate">State</label>
+    <label class="col-md-4 control-label" for="selectstate">State:</label>
   <div class="col-md-4">
     <select id="selectstate" name="selectbasic" class="form-control">
       <option value="Alabama">Alabama</option>
@@ -88,15 +83,15 @@
       <option value="Wyoming">Wyoming</option>
     </select>
   </div>
-    <label for="zip_code">ZIP Code</label><br>
+    <label for="zip_code">ZIP Code:</label><br>
     <input type="text" id="zip_code" name="zip_code" value=""><br>
-    <label for="university">University</label><br>
+    <label for="university">University:</label><br>
     <input type="text" id="university" name="university" value=""><br>
-    <label for="uni_city">University City</label><br>
+    <label for="uni_city">University City:</label><br>
     <input type="text" id="uni_city" name="uni_city" value=""><br>
-    <label for="gpa">GPA</label><br>
+    <label for="gpa">GPA:</label><br>
     <input type="text" id="gpa" name="gpa" value=""><br>
-    <label class="col-md-4 control-label" for="selectdegree">Degree</label>
+    <label class="col-md-4 control-label" for="selectdegree">Degree:</label>
     <div class="col-md-4">
     <select id="selectdegree" name="selectbasic" class="form-control">
       <option value="High School">High School</option>
@@ -106,74 +101,74 @@
       <option value="Ph">PhD</option>
     </select>
     </div>
-    <label for="major">Major (case sensitive)</label><br>
+    <label for="major">Major (case sensitive):</label><br>
     <input type="text" id="major" name="major" value=""><br>
-    <label for="uni_start">University Start Date</label><br>
+    <label for="uni_start">University Start Date:</label><br>
     <input type="month" id="uni_start" name="uni_start" value=""><br>
-    <label for="grad_date">Graduation Date</label><br>
+    <label for="grad_date">Graduation Date:</label><br>
     <input type="month" id="grad_date" name="grad_date" value=""><br>
-    <label for="employer1">Employer 1</label><br>
+    <label for="employer1">Employer 1:</label><br>
     <input type="text" id="employer1" name="employer1" value=""><br>
-    <label for="job_title1">Job 1 Title </label><br>
+    <label for="job_title1">Job 1 Title: </label><br>
     <input type="text" id="job_title1" name="job_title1" value=""><br>
-    <label for="current_job1">Current Job</label>
+    <label for="current_job1">Current Job:</label>
     <input type="checkbox" id="current_job1" name="current_job1" value=1><br>
-    <label for="job_location1">Job 1 Location</label><br>
+    <label for="job_location1">Job 1 Location:</label><br>
     <input type="text" id="job_location1" name="job_location1" value=""><br>
-    <label for="job_start1">Job 1 Start Date</label><br>
+    <label for="job_start1">Job 1 Start Date:</label><br>
     <input type="month" id="job_start1" name="job_start1" value=""><br>
-    <label for="job_end1">Job 1 End Date</label><br>
+    <label for="job_end1">Job 1 End Date:</label><br>
     <input type="month" id="job_end1" name="job_end1" value=""><br>
-    <label class="col-md-4 control-label" for="job_desc1">Job 1 Description</label>
+    <label class="col-md-4 control-label" for="job_desc1">Job 1 Description:</label>
     <div class="col-md-4">                     
       <textarea class="form-control" id="job_desc1" name="job_desc1" value=""></textarea>
     </div>
-    <label for="employer2">Employer 2</label><br>
+    <label for="employer2">Employer 2:</label><br>
     <input type="text" id="employer2" name="employer2" value=""><br>
-    <label for="job_title2">Job 2 Title </label><br>
+    <label for="job_title2">Job 2 Title: </label><br>
     <input type="text" id="job_title2" name="job_title2" value=""><br>
-    <label for="current_job2">Current Job</label>
+    <label for="current_job2">Current Job:</label>
     <input type="checkbox" id="current_job2" name="current_job2" value=2><br>
-    <label for="job_location2">Job 2 Location</label><br>
+    <label for="job_location2">Job 2 Location:</label><br>
     <input type="text" id="job_location2" name="job_location2" value=""><br>
-    <label for="job_start2">Job 2 Start Date</label><br>
+    <label for="job_start2">Job 2 Start Date:</label><br>
     <input type="month" id="job_start2" name="job_start2" value=""><br>
-    <label for="job_end2">Job 2 End Date</label><br>
+    <label for="job_end2">Job 2 End Date:</label><br>
     <input type="month" id="job_end2" name="job_end2" value=""><br>
-    <label class="col-md-4 control-label" for="job_desc2">Job 2 Description</label>
+    <label class="col-md-4 control-label" for="job_desc2">Job 2 Description:</label>
     <div class="col-md-4">                     
       <textarea class="form-control" id="job_desc2" name="job_desc2" value=""></textarea>
     </div>
-    <label for="employer3">Employer 3</label><br>
+    <label for="employer3">Employer 3:</label><br>
     <input type="text" id="employer3" name="employer3" value=""><br>
-    <label for="job_title3">Job 3 Title </label><br>
+    <label for="job_title3">Job 3 Title: </label><br>
     <input type="text" id="job_title3" name="job_title3" value=""><br>
-    <label for="current_job3">Current Job</label>
+    <label for="current_job3">Current Job:</label>
     <input type="checkbox" id="current_job3" name="current_job3" value=3><br>
-    <label for="job_location3">Job 3 Location</label><br>
+    <label for="job_location3">Job 3 Location:</label><br>
     <input type="text" id="job_location3" name="job_location3" value=""><br>
-    <label for="job_start3">Job 3 Start Date</label><br>
+    <label for="job_start3">Job 3 Start Date:</label><br>
     <input type="month" id="job_start3" name="job_start3" value=""><br>
-    <label for="job_end3">Job 3 End Date</label><br>
+    <label for="job_end3">Job 3 End Date:</label><br>
     <input type="month" id="job_end3" name="job_end3" value=""><br>
-    <label class="col-md-4 control-label" for="job_desc3">Job 3 Description</label>
+    <label class="col-md-4 control-label" for="job_desc3">Job 3 Description:</label>
     <div class="col-md-4">                     
       <textarea class="form-control" id="job_desc3" name="job_desc3" value=""></textarea>
     </div>
-    <label for="username">Username</label><br>
+    <label for="username">Username:</label><br>
     <input type="text" id="username" name="username" value=""><br>
-    <label for="password">Password</label><br>
+    <label for="password">Password:</label><br>
     <input type="password" id="password" name="password" value=""><br>
-    <label for="question">Security Question</label><br>
+    <label for="question">Security Question:</label><br>
     <input type="text" id="question" name="question" value=""><br>
-    <label for="answer">Security Question Answer</label><br>
+    <label for="answer">Security Question Answer:</label><br>
     <input type="text" id="answer" name="answer" value=""><br><br>
     <!-- <label for="resume">Upload Your Resume (Autofill not yet supported)</label><br>
     <input type="file" id="resume" /><br><br> -->
     <button type="button" id="submit"> Submit </button>
     </fieldset>
   </form>
-  <div style="visibility: hidden;" id="successMessage"><p>&nbsp;Profile Saved!</p></div><br>
+  <div id="successMessage"><p>&nbsp;Profile Saved!</p></div><br>
   <p>Taleo Password Requirements<br>
     * It must contain between 7 and 50 characters.<br>
     * It must contain at least 1 numeric character(s) (0123456789).<br>
